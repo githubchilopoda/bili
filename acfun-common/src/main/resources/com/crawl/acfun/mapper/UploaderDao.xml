@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crawl.acfun.dao.UploaderDao">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.crawl.acfun.entity.po.Uploader">
+		<!--平台用户id-->
+		<result column="uid" property="uid"  />
+		<!--网站id-->
+		<result column="webId" property="webId"  />
+		<!---->
+		<result column="username" property="username"  />
+		<!---->
+		<result column="gender" property="gender"  />
+		<!---->
+		<result column="verified" property="verified"  />
+		<!---->
+		<result column="isDisabled" property="isDisabled"  />
+		<!---->
+		<result column="video" property="video"  />
+		<!---->
+		<result column="article" property="article"  />
+		<!---->
+		<result column="collection" property="collection"  />
+		<!---->
+		<result column="followedCount" property="followedCount"  />
+		<!---->
+		<result column="followingCount" property="followingCount"  />
+		<!---->
+		<result column="userImg" property="userImg"  />
+		<!---->
+		<result column="signature" property="signature"  />
+		<!---->
+		<result column="verifiedText" property="verifiedText"  />
+		<!---->
+		<result column="spaceImage" property="spaceImage"  />
+		<!---->
+		<result column="createDate" property="createDate"  />
+		<!---->
+		<result column="lastGrabDate" property="lastGrabDate"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 uid,webId,username,gender,verified,isDisabled,video,article,collection,followedCount,followingCount,userImg,signature,verifiedText,spaceImage,createDate,lastGrabDate
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="uid != null">
+				 and  uid = #{uid}
+			</if>
+			<if test="webId != null">
+				 and  webId = #{webId}
+			</if>
+			<if test="username != null and username!=''">
+				 and  username = #{username}
+			</if>
+			<if test="gender != null">
+				 and  gender = #{gender}
+			</if>
+			<if test="verified != null">
+				 and  verified = #{verified}
+			</if>
+			<if test="isDisabled != null">
+				 and  isDisabled = #{isDisabled}
+			</if>
+			<if test="video != null">
+				 and  video = #{video}
+			</if>
+			<if test="article != null">
+				 and  article = #{article}
+			</if>
+			<if test="collection != null">
+				 and  collection = #{collection}
+			</if>
+			<if test="followedCount != null">
+				 and  followedCount = #{followedCount}
+			</if>
+			<if test="followingCount != null">
+				 and  followingCount = #{followingCount}
+			</if>
+			<if test="userImg != null and userImg!=''">
+				 and  userImg = #{userImg}
+			</if>
+			<if test="signature != null and signature!=''">
+				 and  signature = #{signature}
+			</if>
+			<if test="verifiedText != null and verifiedText!=''">
+				 and  verifiedText = #{verifiedText}
+			</if>
+			<if test="spaceImage != null and spaceImage!=''">
+				 and  spaceImage = #{spaceImage}
+			</if>
+			<if test="createDate != null">
+				 and  createDate = #{createDate}
+			</if>
+			<if test="lastGrabDate != null">
+				 and  lastGrabDate = #{lastGrabDate}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where> <include refid="base_condition_filed" />	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+			<if test="usernameFuzzy!= null  and usernameFuzzy!=''">
+				 and  username like concat('%', #{usernameFuzzy}, '%')
+			</if>
+			<if test="userImgFuzzy!= null  and userImgFuzzy!=''">
+				 and  userImg like concat('%', #{userImgFuzzy}, '%')
+			</if>
+			<if test="signatureFuzzy!= null  and signatureFuzzy!=''">
+				 and  signature like concat('%', #{signatureFuzzy}, '%')
+			</if>
+			<if test="verifiedTextFuzzy!= null  and verifiedTextFuzzy!=''">
+				 and  verifiedText like concat('%', #{verifiedTextFuzzy}, '%')
+			</if>
+			<if test="spaceImageFuzzy!= null  and spaceImageFuzzy!=''">
+				 and  spaceImage like concat('%', #{spaceImageFuzzy}, '%')
+			</if>
+			<if test="createDateStart!= null and createDateStart!=''">
+				 <![CDATA[ and  createDate>=str_to_date('${createDateStart}', '%Y-%m-%d') ]]>
+			</if>
+			<if test="createDateEnd!= null and createDateEnd!=''">
+				 <![CDATA[ and  createDate< date_sub(str_to_date('${createDateEnd}','%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+			<if test="lastGrabDateStart!= null and lastGrabDateStart!=''">
+				 <![CDATA[ and  lastGrabDate>=str_to_date('${lastGrabDateStart}', '%Y-%m-%d') ]]>
+			</if>
+			<if test="lastGrabDateEnd!= null and lastGrabDateEnd!=''">
+				 <![CDATA[ and  lastGrabDate< date_sub(str_to_date('${lastGrabDateEnd}','%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+	 </where>
+	</sql>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.crawl.acfun.entity.po.Uploader">
+		 INSERT INTO uploader
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="uid != null">
+				 uid,
+			</if>
+			<if test="webId != null">
+				 webId,
+			</if>
+			<if test="username != null">
+				 username,
+			</if>
+			<if test="gender != null">
+				 gender,
+			</if>
+			<if test="verified != null">
+				 verified,
+			</if>
+			<if test="isDisabled != null">
+				 isDisabled,
+			</if>
+			<if test="video != null">
+				 video,
+			</if>
+			<if test="article != null">
+				 article,
+			</if>
+			<if test="collection != null">
+				 collection,
+			</if>
+			<if test="followedCount != null">
+				 followedCount,
+			</if>
+			<if test="followingCount != null">
+				 followingCount,
+			</if>
+			<if test="userImg != null">
+				 userImg,
+			</if>
+			<if test="signature != null">
+				 signature,
+			</if>
+			<if test="verifiedText != null">
+				 verifiedText,
+			</if>
+			<if test="spaceImage != null">
+				 spaceImage,
+			</if>
+			<if test="createDate != null">
+				 createDate,
+			</if>
+			<if test="lastGrabDate != null">
+				 lastGrabDate,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="uid!=null">
+				 #{uid},
+			</if>
+			<if test="webId!=null">
+				 #{webId},
+			</if>
+			<if test="username!=null">
+				 #{username},
+			</if>
+			<if test="gender!=null">
+				 #{gender},
+			</if>
+			<if test="verified!=null">
+				 #{verified},
+			</if>
+			<if test="isDisabled!=null">
+				 #{isDisabled},
+			</if>
+			<if test="video!=null">
+				 #{video},
+			</if>
+			<if test="article!=null">
+				 #{article},
+			</if>
+			<if test="collection!=null">
+				 #{collection},
+			</if>
+			<if test="followedCount!=null">
+				 #{followedCount},
+			</if>
+			<if test="followingCount!=null">
+				 #{followingCount},
+			</if>
+			<if test="userImg!=null">
+				 #{userImg},
+			</if>
+			<if test="signature!=null">
+				 #{signature},
+			</if>
+			<if test="verifiedText!=null">
+				 #{verifiedText},
+			</if>
+			<if test="spaceImage!=null">
+				 #{spaceImage},
+			</if>
+			<if test="createDate!=null">
+				 #{createDate},
+			</if>
+			<if test="lastGrabDate!=null">
+				 #{lastGrabDate},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+		<insert id="insertBatch" parameterType="com.crawl.acfun.entity.po.Uploader">
+		 INSERT INTO uploader(uid,webId,username,gender,verified,isDisabled,video,article,collection,followedCount,followingCount,userImg,signature,verifiedText,spaceImage,createDate,lastGrabDate)values
+			 <foreach collection="list" item="item" separator=",">
+			 (
+			 #{item.uid},#{item.webId},#{item.username},#{item.gender},#{item.verified},#{item.isDisabled},#{item.video},#{item.article},#{item.collection},#{item.followedCount},#{item.followingCount},#{item.userImg},#{item.signature},#{item.verifiedText},#{item.spaceImage},#{item.createDate},#{item.lastGrabDate}
+			 )
+			 </foreach>
+		</insert>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM uploader <include refid="query_condition" />
+		 <if test="orderBy!=null">
+			 order by ${orderBy}
+			 <if test="ascOrDesc!=null">
+				 ${ascOrDesc}
+			 </if>
+		 </if>
+		 <if test="page!=null">
+			 limit #{page.start},#{page.end}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM uploader <include refid="query_condition" />
+	</select>
+
+</mapper>

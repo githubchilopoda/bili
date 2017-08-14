@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crawl.acfun.dao.AcfunVideoDao">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.crawl.acfun.entity.po.AcfunVideo">
+		<!---->
+		<result column="id" property="id"  />
+		<!---->
+		<result column="webId" property="webId"  />
+		<!---->
+		<result column="type" property="type"  />
+		<!---->
+		<result column="status" property="status"  />
+		<!---->
+		<result column="views" property="views"  />
+		<!---->
+		<result column="stows" property="stows"  />
+		<!---->
+		<result column="heat" property="heat"  />
+		<!---->
+		<result column="week" property="week"  />
+		<!---->
+		<result column="coverHorizontal" property="coverHorizontal"  />
+		<!---->
+		<result column="coverVertical" property="coverVertical"  />
+		<!---->
+		<result column="title" property="title"  />
+		<!---->
+		<result column="lastVideoName" property="lastVideoName"  />
+		<!---->
+		<result column="cover" property="cover"  />
+		<!---->
+		<result column="intro" property="intro"  />
+		<!---->
+		<result column="visibleLevel" property="visibleLevel"  />
+		<!---->
+		<result column="lastUpdateTime" property="lastUpdateTime"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 id,webId,type,status,views,stows,heat,week,coverHorizontal,coverVertical,title,lastVideoName,cover,intro,visibleLevel,lastUpdateTime
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="id != null">
+				 and  id = #{id}
+			</if>
+			<if test="webId != null">
+				 and  webId = #{webId}
+			</if>
+			<if test="type != null">
+				 and  type = #{type}
+			</if>
+			<if test="status != null">
+				 and  status = #{status}
+			</if>
+			<if test="views != null">
+				 and  views = #{views}
+			</if>
+			<if test="stows != null">
+				 and  stows = #{stows}
+			</if>
+			<if test="heat != null">
+				 and  heat = #{heat}
+			</if>
+			<if test="week != null">
+				 and  week = #{week}
+			</if>
+			<if test="coverHorizontal != null and coverHorizontal!=''">
+				 and  coverHorizontal = #{coverHorizontal}
+			</if>
+			<if test="coverVertical != null and coverVertical!=''">
+				 and  coverVertical = #{coverVertical}
+			</if>
+			<if test="title != null and title!=''">
+				 and  title = #{title}
+			</if>
+			<if test="lastVideoName != null and lastVideoName!=''">
+				 and  lastVideoName = #{lastVideoName}
+			</if>
+			<if test="cover != null and cover!=''">
+				 and  cover = #{cover}
+			</if>
+			<if test="intro != null and intro!=''">
+				 and  intro = #{intro}
+			</if>
+			<if test="visibleLevel != null">
+				 and  visibleLevel = #{visibleLevel}
+			</if>
+			<if test="lastUpdateTime != null">
+				 and  lastUpdateTime = #{lastUpdateTime}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where> <include refid="base_condition_filed" />	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+			<if test="coverHorizontalFuzzy!= null  and coverHorizontalFuzzy!=''">
+				 and  coverHorizontal like concat('%', #{coverHorizontalFuzzy}, '%')
+			</if>
+			<if test="coverVerticalFuzzy!= null  and coverVerticalFuzzy!=''">
+				 and  coverVertical like concat('%', #{coverVerticalFuzzy}, '%')
+			</if>
+			<if test="titleFuzzy!= null  and titleFuzzy!=''">
+				 and  title like concat('%', #{titleFuzzy}, '%')
+			</if>
+			<if test="lastVideoNameFuzzy!= null  and lastVideoNameFuzzy!=''">
+				 and  lastVideoName like concat('%', #{lastVideoNameFuzzy}, '%')
+			</if>
+			<if test="coverFuzzy!= null  and coverFuzzy!=''">
+				 and  cover like concat('%', #{coverFuzzy}, '%')
+			</if>
+			<if test="introFuzzy!= null  and introFuzzy!=''">
+				 and  intro like concat('%', #{introFuzzy}, '%')
+			</if>
+			<if test="lastUpdateTimeStart!= null and lastUpdateTimeStart!=''">
+				 <![CDATA[ and  lastUpdateTime>=str_to_date('${lastUpdateTimeStart}', '%Y-%m-%d') ]]>
+			</if>
+			<if test="lastUpdateTimeEnd!= null and lastUpdateTimeEnd!=''">
+				 <![CDATA[ and  lastUpdateTime< date_sub(str_to_date('${lastUpdateTimeEnd}','%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+	 </where>
+	</sql>
+
+	<!--删除：根据条件删除-->
+	<delete id="delete" parameterType="java.lang.Integer">
+		 DELETE FROM acfun_video <include refid="base_condition" />
+	</delete>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.crawl.acfun.entity.po.AcfunVideo">
+		 INSERT INTO acfun_video
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null">
+				 id,
+			</if>
+			<if test="webId != null">
+				 webId,
+			</if>
+			<if test="type != null">
+				 type,
+			</if>
+			<if test="status != null">
+				 status,
+			</if>
+			<if test="views != null">
+				 views,
+			</if>
+			<if test="stows != null">
+				 stows,
+			</if>
+			<if test="heat != null">
+				 heat,
+			</if>
+			<if test="week != null">
+				 week,
+			</if>
+			<if test="coverHorizontal != null">
+				 coverHorizontal,
+			</if>
+			<if test="coverVertical != null">
+				 coverVertical,
+			</if>
+			<if test="title != null">
+				 title,
+			</if>
+			<if test="lastVideoName != null">
+				 lastVideoName,
+			</if>
+			<if test="cover != null">
+				 cover,
+			</if>
+			<if test="intro != null">
+				 intro,
+			</if>
+			<if test="visibleLevel != null">
+				 visibleLevel,
+			</if>
+			<if test="lastUpdateTime != null">
+				 lastUpdateTime,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id!=null">
+				 #{id},
+			</if>
+			<if test="webId!=null">
+				 #{webId},
+			</if>
+			<if test="type!=null">
+				 #{type},
+			</if>
+			<if test="status!=null">
+				 #{status},
+			</if>
+			<if test="views!=null">
+				 #{views},
+			</if>
+			<if test="stows!=null">
+				 #{stows},
+			</if>
+			<if test="heat!=null">
+				 #{heat},
+			</if>
+			<if test="week!=null">
+				 #{week},
+			</if>
+			<if test="coverHorizontal!=null">
+				 #{coverHorizontal},
+			</if>
+			<if test="coverVertical!=null">
+				 #{coverVertical},
+			</if>
+			<if test="title!=null">
+				 #{title},
+			</if>
+			<if test="lastVideoName!=null">
+				 #{lastVideoName},
+			</if>
+			<if test="cover!=null">
+				 #{cover},
+			</if>
+			<if test="intro!=null">
+				 #{intro},
+			</if>
+			<if test="visibleLevel!=null">
+				 #{visibleLevel},
+			</if>
+			<if test="lastUpdateTime!=null">
+				 #{lastUpdateTime},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+		<insert id="insertBatch" parameterType="com.crawl.acfun.entity.po.AcfunVideo">
+		 INSERT INTO acfun_video(id,webId,type,status,views,stows,heat,week,coverHorizontal,coverVertical,title,lastVideoName,cover,intro,visibleLevel,lastUpdateTime)values
+			 <foreach collection="list" item="item" separator=",">
+			 (
+			 #{item.id},#{item.webId},#{item.type},#{item.status},#{item.views},#{item.stows},#{item.heat},#{item.week},#{item.coverHorizontal},#{item.coverVertical},#{item.title},#{item.lastVideoName},#{item.cover},#{item.intro},#{item.visibleLevel},#{item.lastUpdateTime}
+			 )
+			 </foreach>
+		</insert>
+
+	<!-- 修 改-->
+	<update id="update" parameterType="com.crawl.acfun.entity.po.AcfunVideo">
+		 UPDATE acfun_video
+ 		 <set> 
+			<if test="id != null">
+				 id = #{id},
+			</if>
+			<if test="webId != null">
+				 webId = #{webId},
+			</if>
+			<if test="type != null">
+				 type = #{type},
+			</if>
+			<if test="status != null">
+				 status = #{status},
+			</if>
+			<if test="views != null">
+				 views = #{views},
+			</if>
+			<if test="stows != null">
+				 stows = #{stows},
+			</if>
+			<if test="heat != null">
+				 heat = #{heat},
+			</if>
+			<if test="week != null">
+				 week = #{week},
+			</if>
+			<if test="coverHorizontal != null">
+				 coverHorizontal = #{coverHorizontal},
+			</if>
+			<if test="coverVertical != null">
+				 coverVertical = #{coverVertical},
+			</if>
+			<if test="title != null">
+				 title = #{title},
+			</if>
+			<if test="lastVideoName != null">
+				 lastVideoName = #{lastVideoName},
+			</if>
+			<if test="cover != null">
+				 cover = #{cover},
+			</if>
+			<if test="intro != null">
+				 intro = #{intro},
+			</if>
+			<if test="visibleLevel != null">
+				 visibleLevel = #{visibleLevel},
+			</if>
+			<if test="lastUpdateTime != null">
+				 lastUpdateTime = #{lastUpdateTime},
+			</if>
+ 		 </set>
+ 		<include refid="base_condition" />
+	</update>
+
+	<!-- 根据PrimaryKey删除-->
+	<delete id="deleteByPrimaryKey">
+		delete from acfun_video where id=#{id} and webId=#{webId}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByPrimaryKey" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from acfun_video where id=#{id} and webId=#{webId}
+	</select>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM acfun_video <include refid="query_condition" />
+		 <if test="orderBy!=null">
+			 order by ${orderBy}
+			 <if test="ascOrDesc!=null">
+				 ${ascOrDesc}
+			 </if>
+		 </if>
+		 <if test="page!=null">
+			 limit #{page.start},#{page.end}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM acfun_video <include refid="query_condition" />
+	</select>
+
+</mapper>

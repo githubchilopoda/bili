@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crawl.acfun.dao.RankVideoDao">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.crawl.acfun.entity.po.RankVideo">
+		<!---->
+		<result column="id" property="id"  />
+		<!---->
+		<result column="webId" property="webId"  />
+		<!---->
+		<result column="title" property="title"  />
+		<!---->
+		<result column="titleImg" property="titleImg"  />
+		<!---->
+		<result column="channelId" property="channelId"  />
+		<!---->
+		<result column="url" property="url"  />
+		<!---->
+		<result column="username" property="username"  />
+		<!---->
+		<result column="userId" property="userId"  />
+		<!---->
+		<result column="userImg" property="userImg"  />
+		<!---->
+		<result column="signature" property="signature"  />
+		<!---->
+		<result column="contributes" property="contributes"  />
+		<!---->
+		<result column="followedCount" property="followedCount"  />
+		<!---->
+		<result column="releaseDate" property="releaseDate"  />
+		<!---->
+		<result column="views" property="views"  />
+		<!---->
+		<result column="comments" property="comments"  />
+		<!---->
+		<result column="verified" property="verified"  />
+		<!---->
+		<result column="verifiedText" property="verifiedText"  />
+		<!---->
+		<result column="description" property="description"  />
+		<!---->
+		<result column="lastUpdateTime" property="lastUpdateTime"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 id,webId,title,titleImg,channelId,url,username,userId,userImg,signature,contributes,followedCount,releaseDate,views,comments,verified,verifiedText,description,lastUpdateTime
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="id != null">
+				 and  id = #{id}
+			</if>
+			<if test="webId != null">
+				 and  webId = #{webId}
+			</if>
+			<if test="title != null and title!=''">
+				 and  title = #{title}
+			</if>
+			<if test="titleImg != null and titleImg!=''">
+				 and  titleImg = #{titleImg}
+			</if>
+			<if test="channelId != null">
+				 and  channelId = #{channelId}
+			</if>
+			<if test="url != null and url!=''">
+				 and  url = #{url}
+			</if>
+			<if test="username != null and username!=''">
+				 and  username = #{username}
+			</if>
+			<if test="userId != null">
+				 and  userId = #{userId}
+			</if>
+			<if test="userImg != null and userImg!=''">
+				 and  userImg = #{userImg}
+			</if>
+			<if test="signature != null and signature!=''">
+				 and  signature = #{signature}
+			</if>
+			<if test="contributes != null">
+				 and  contributes = #{contributes}
+			</if>
+			<if test="followedCount != null">
+				 and  followedCount = #{followedCount}
+			</if>
+			<if test="releaseDate != null">
+				 and  releaseDate = #{releaseDate}
+			</if>
+			<if test="views != null">
+				 and  views = #{views}
+			</if>
+			<if test="comments != null">
+				 and  comments = #{comments}
+			</if>
+			<if test="verified != null">
+				 and  verified = #{verified}
+			</if>
+			<if test="verifiedText != null and verifiedText!=''">
+				 and  verifiedText = #{verifiedText}
+			</if>
+			<if test="description != null and description!=''">
+				 and  description = #{description}
+			</if>
+			<if test="lastUpdateTime != null">
+				 and  lastUpdateTime = #{lastUpdateTime}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where> <include refid="base_condition_filed" />	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+			<if test="titleFuzzy!= null  and titleFuzzy!=''">
+				 and  title like concat('%', #{titleFuzzy}, '%')
+			</if>
+			<if test="titleImgFuzzy!= null  and titleImgFuzzy!=''">
+				 and  titleImg like concat('%', #{titleImgFuzzy}, '%')
+			</if>
+			<if test="urlFuzzy!= null  and urlFuzzy!=''">
+				 and  url like concat('%', #{urlFuzzy}, '%')
+			</if>
+			<if test="usernameFuzzy!= null  and usernameFuzzy!=''">
+				 and  username like concat('%', #{usernameFuzzy}, '%')
+			</if>
+			<if test="userImgFuzzy!= null  and userImgFuzzy!=''">
+				 and  userImg like concat('%', #{userImgFuzzy}, '%')
+			</if>
+			<if test="signatureFuzzy!= null  and signatureFuzzy!=''">
+				 and  signature like concat('%', #{signatureFuzzy}, '%')
+			</if>
+			<if test="releaseDateStart!= null and releaseDateStart!=''">
+				 <![CDATA[ and  releaseDate>=str_to_date('${releaseDateStart}', '%Y-%m-%d') ]]>
+			</if>
+			<if test="releaseDateEnd!= null and releaseDateEnd!=''">
+				 <![CDATA[ and  releaseDate< date_sub(str_to_date('${releaseDateEnd}','%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+			<if test="verifiedTextFuzzy!= null  and verifiedTextFuzzy!=''">
+				 and  verifiedText like concat('%', #{verifiedTextFuzzy}, '%')
+			</if>
+			<if test="descriptionFuzzy!= null  and descriptionFuzzy!=''">
+				 and  description like concat('%', #{descriptionFuzzy}, '%')
+			</if>
+			<if test="lastUpdateTimeStart!= null and lastUpdateTimeStart!=''">
+				 <![CDATA[ and  lastUpdateTime>=str_to_date('${lastUpdateTimeStart}', '%Y-%m-%d') ]]>
+			</if>
+			<if test="lastUpdateTimeEnd!= null and lastUpdateTimeEnd!=''">
+				 <![CDATA[ and  lastUpdateTime< date_sub(str_to_date('${lastUpdateTimeEnd}','%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+	 </where>
+	</sql>
+
+	<!--删除：根据条件删除-->
+	<delete id="delete" parameterType="java.lang.Integer">
+		 DELETE FROM rank_video <include refid="base_condition" />
+	</delete>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.crawl.acfun.entity.po.RankVideo">
+		 INSERT INTO rank_video
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null">
+				 id,
+			</if>
+			<if test="webId != null">
+				 webId,
+			</if>
+			<if test="title != null">
+				 title,
+			</if>
+			<if test="titleImg != null">
+				 titleImg,
+			</if>
+			<if test="channelId != null">
+				 channelId,
+			</if>
+			<if test="url != null">
+				 url,
+			</if>
+			<if test="username != null">
+				 username,
+			</if>
+			<if test="userId != null">
+				 userId,
+			</if>
+			<if test="userImg != null">
+				 userImg,
+			</if>
+			<if test="signature != null">
+				 signature,
+			</if>
+			<if test="contributes != null">
+				 contributes,
+			</if>
+			<if test="followedCount != null">
+				 followedCount,
+			</if>
+			<if test="releaseDate != null">
+				 releaseDate,
+			</if>
+			<if test="views != null">
+				 views,
+			</if>
+			<if test="comments != null">
+				 comments,
+			</if>
+			<if test="verified != null">
+				 verified,
+			</if>
+			<if test="verifiedText != null">
+				 verifiedText,
+			</if>
+			<if test="description != null">
+				 description,
+			</if>
+			<if test="lastUpdateTime != null">
+				 lastUpdateTime,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id!=null">
+				 #{id},
+			</if>
+			<if test="webId!=null">
+				 #{webId},
+			</if>
+			<if test="title!=null">
+				 #{title},
+			</if>
+			<if test="titleImg!=null">
+				 #{titleImg},
+			</if>
+			<if test="channelId!=null">
+				 #{channelId},
+			</if>
+			<if test="url!=null">
+				 #{url},
+			</if>
+			<if test="username!=null">
+				 #{username},
+			</if>
+			<if test="userId!=null">
+				 #{userId},
+			</if>
+			<if test="userImg!=null">
+				 #{userImg},
+			</if>
+			<if test="signature!=null">
+				 #{signature},
+			</if>
+			<if test="contributes!=null">
+				 #{contributes},
+			</if>
+			<if test="followedCount!=null">
+				 #{followedCount},
+			</if>
+			<if test="releaseDate!=null">
+				 #{releaseDate},
+			</if>
+			<if test="views!=null">
+				 #{views},
+			</if>
+			<if test="comments!=null">
+				 #{comments},
+			</if>
+			<if test="verified!=null">
+				 #{verified},
+			</if>
+			<if test="verifiedText!=null">
+				 #{verifiedText},
+			</if>
+			<if test="description!=null">
+				 #{description},
+			</if>
+			<if test="lastUpdateTime!=null">
+				 #{lastUpdateTime},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+		<insert id="insertBatch" parameterType="com.crawl.acfun.entity.po.RankVideo">
+		 INSERT INTO rank_video(id,webId,title,titleImg,channelId,url,username,userId,userImg,signature,contributes,followedCount,releaseDate,views,comments,verified,verifiedText,description,lastUpdateTime)values
+			 <foreach collection="list" item="item" separator=",">
+			 (
+			 #{item.id},#{item.webId},#{item.title},#{item.titleImg},#{item.channelId},#{item.url},#{item.username},#{item.userId},#{item.userImg},#{item.signature},#{item.contributes},#{item.followedCount},#{item.releaseDate},#{item.views},#{item.comments},#{item.verified},#{item.verifiedText},#{item.description},#{item.lastUpdateTime}
+			 )
+			 </foreach>
+		</insert>
+
+	<!-- 修 改-->
+	<update id="update" parameterType="com.crawl.acfun.entity.po.RankVideo">
+		 UPDATE rank_video
+ 		 <set> 
+			<if test="id != null">
+				 id = #{id},
+			</if>
+			<if test="webId != null">
+				 webId = #{webId},
+			</if>
+			<if test="title != null">
+				 title = #{title},
+			</if>
+			<if test="titleImg != null">
+				 titleImg = #{titleImg},
+			</if>
+			<if test="channelId != null">
+				 channelId = #{channelId},
+			</if>
+			<if test="url != null">
+				 url = #{url},
+			</if>
+			<if test="username != null">
+				 username = #{username},
+			</if>
+			<if test="userId != null">
+				 userId = #{userId},
+			</if>
+			<if test="userImg != null">
+				 userImg = #{userImg},
+			</if>
+			<if test="signature != null">
+				 signature = #{signature},
+			</if>
+			<if test="contributes != null">
+				 contributes = #{contributes},
+			</if>
+			<if test="followedCount != null">
+				 followedCount = #{followedCount},
+			</if>
+			<if test="releaseDate != null">
+				 releaseDate = #{releaseDate},
+			</if>
+			<if test="views != null">
+				 views = #{views},
+			</if>
+			<if test="comments != null">
+				 comments = #{comments},
+			</if>
+			<if test="verified != null">
+				 verified = #{verified},
+			</if>
+			<if test="verifiedText != null">
+				 verifiedText = #{verifiedText},
+			</if>
+			<if test="description != null">
+				 description = #{description},
+			</if>
+			<if test="lastUpdateTime != null">
+				 lastUpdateTime = #{lastUpdateTime},
+			</if>
+ 		 </set>
+ 		<include refid="base_condition" />
+	</update>
+
+	<!-- 根据PrimaryKey删除-->
+	<delete id="deleteByPrimaryKey">
+		delete from rank_video where id=#{id} and webId=#{webId}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByPrimaryKey" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from rank_video where id=#{id} and webId=#{webId}
+	</select>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM rank_video <include refid="query_condition" />
+		 <if test="orderBy!=null">
+			 order by ${orderBy}
+			 <if test="ascOrDesc!=null">
+				 ${ascOrDesc}
+			 </if>
+		 </if>
+		 <if test="page!=null">
+			 limit #{page.start},#{page.end}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM rank_video <include refid="query_condition" />
+	</select>
+
+</mapper>

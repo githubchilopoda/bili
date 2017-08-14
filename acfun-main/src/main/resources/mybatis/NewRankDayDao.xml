@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crawl.webchat.dao.NewRankDayDao">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.crawl.webchat.entity.po.NewRankDay">
+		<!---->
+		<result column="rank" property="rank"  />
+		<!---->
+		<result column="categoryName" property="categoryName"  />
+		<!---->
+		<result column="day" property="day"  />
+		<!---->
+		<result column="account" property="account"  />
+		<!---->
+		<result column="accountName" property="accountName"  />
+		<!---->
+		<result column="fabu1" property="fabu1"  />
+		<!---->
+		<result column="fabu2" property="fabu2"  />
+		<!---->
+		<result column="zongyuedu" property="zongyuedu"  />
+		<!---->
+		<result column="toutiao" property="toutiao"  />
+		<!---->
+		<result column="pingjun" property="pingjun"  />
+		<!---->
+		<result column="zuigao" property="zuigao"  />
+		<!---->
+		<result column="dianzhan" property="dianzhan"  />
+		<!---->
+		<result column="zishu" property="zishu"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 rank,categoryName,day,account,accountName,fabu1,fabu2,zongyuedu,toutiao,pingjun,zuigao,dianzhan,zishu
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="rank != null">
+				 and  rank = #{rank}
+			</if>
+			<if test="categoryName != null and categoryName!=''">
+				 and  categoryName = #{categoryName}
+			</if>
+			<if test="day != null">
+				 and  day = #{day}
+			</if>
+			<if test="account != null and account!=''">
+				 and  account = #{account}
+			</if>
+			<if test="accountName != null and accountName!=''">
+				 and  accountName = #{accountName}
+			</if>
+			<if test="fabu1 != null">
+				 and  fabu1 = #{fabu1}
+			</if>
+			<if test="fabu2 != null">
+				 and  fabu2 = #{fabu2}
+			</if>
+			<if test="zongyuedu != null">
+				 and  zongyuedu = #{zongyuedu}
+			</if>
+			<if test="toutiao != null">
+				 and  toutiao = #{toutiao}
+			</if>
+			<if test="pingjun != null">
+				 and  pingjun = #{pingjun}
+			</if>
+			<if test="zuigao != null">
+				 and  zuigao = #{zuigao}
+			</if>
+			<if test="dianzhan != null">
+				 and  dianzhan = #{dianzhan}
+			</if>
+			<if test="zishu != null">
+				 and  zishu = #{zishu}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where> <include refid="base_condition_filed" />	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+			<if test="categoryNameFuzzy!= null  and categoryNameFuzzy!=''">
+				 and  categoryName like concat('%', #{categoryNameFuzzy}, '%')
+			</if>
+			<if test="dayStart!= null and dayStart!=''">
+				 <![CDATA[ and  day>=str_to_date('${dayStart}', '%Y-%m-%d') ]]>
+			</if>
+			<if test="dayEnd!= null and dayEnd!=''">
+				 <![CDATA[ and  day< date_sub(str_to_date('${dayEnd}','%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+			<if test="accountFuzzy!= null  and accountFuzzy!=''">
+				 and  account like concat('%', #{accountFuzzy}, '%')
+			</if>
+			<if test="accountNameFuzzy!= null  and accountNameFuzzy!=''">
+				 and  accountName like concat('%', #{accountNameFuzzy}, '%')
+			</if>
+	 </where>
+	</sql>
+
+	<!--删除：根据条件删除-->
+	<delete id="delete" parameterType="java.util.Map">
+		 DELETE FROM new_rank_day <include refid="base_condition" />
+	</delete>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.crawl.webchat.entity.po.NewRankDay">
+		 INSERT INTO new_rank_day
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="rank != null">
+				 rank,
+			</if>
+			<if test="categoryName != null">
+				 categoryName,
+			</if>
+			<if test="day != null">
+				 day,
+			</if>
+			<if test="account != null">
+				 account,
+			</if>
+			<if test="accountName != null">
+				 accountName,
+			</if>
+			<if test="fabu1 != null">
+				 fabu1,
+			</if>
+			<if test="fabu2 != null">
+				 fabu2,
+			</if>
+			<if test="zongyuedu != null">
+				 zongyuedu,
+			</if>
+			<if test="toutiao != null">
+				 toutiao,
+			</if>
+			<if test="pingjun != null">
+				 pingjun,
+			</if>
+			<if test="zuigao != null">
+				 zuigao,
+			</if>
+			<if test="dianzhan != null">
+				 dianzhan,
+			</if>
+			<if test="zishu != null">
+				 zishu,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="rank!=null">
+				 #{rank},
+			</if>
+			<if test="categoryName!=null">
+				 #{categoryName},
+			</if>
+			<if test="day!=null">
+				 #{day},
+			</if>
+			<if test="account!=null">
+				 #{account},
+			</if>
+			<if test="accountName!=null">
+				 #{accountName},
+			</if>
+			<if test="fabu1!=null">
+				 #{fabu1},
+			</if>
+			<if test="fabu2!=null">
+				 #{fabu2},
+			</if>
+			<if test="zongyuedu!=null">
+				 #{zongyuedu},
+			</if>
+			<if test="toutiao!=null">
+				 #{toutiao},
+			</if>
+			<if test="pingjun!=null">
+				 #{pingjun},
+			</if>
+			<if test="zuigao!=null">
+				 #{zuigao},
+			</if>
+			<if test="dianzhan!=null">
+				 #{dianzhan},
+			</if>
+			<if test="zishu!=null">
+				 #{zishu},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+		<insert id="insertBatch" parameterType="com.crawl.webchat.entity.po.NewRankDay">
+		 INSERT INTO new_rank_day(rank,categoryName,day,account,accountName,fabu1,fabu2,zongyuedu,toutiao,pingjun,zuigao,dianzhan,zishu)values
+			 <foreach collection="list" item="item" separator=",">
+			 (
+			 #{item.rank},#{item.categoryName},#{item.day},#{item.account},#{item.accountName},#{item.fabu1},#{item.fabu2},#{item.zongyuedu},#{item.toutiao},#{item.pingjun},#{item.zuigao},#{item.dianzhan},#{item.zishu}
+			 )
+			 </foreach>
+		</insert>
+
+	<!-- 修 改-->
+	<update id="update" parameterType="com.crawl.webchat.entity.po.NewRankDay">
+		 UPDATE new_rank_day
+ 		 <set> 
+			<if test="rank != null">
+				 rank = #{rank},
+			</if>
+			<if test="categoryName != null">
+				 categoryName = #{categoryName},
+			</if>
+			<if test="day != null">
+				 day = #{day},
+			</if>
+			<if test="account != null">
+				 account = #{account},
+			</if>
+			<if test="accountName != null">
+				 accountName = #{accountName},
+			</if>
+			<if test="fabu1 != null">
+				 fabu1 = #{fabu1},
+			</if>
+			<if test="fabu2 != null">
+				 fabu2 = #{fabu2},
+			</if>
+			<if test="zongyuedu != null">
+				 zongyuedu = #{zongyuedu},
+			</if>
+			<if test="toutiao != null">
+				 toutiao = #{toutiao},
+			</if>
+			<if test="pingjun != null">
+				 pingjun = #{pingjun},
+			</if>
+			<if test="zuigao != null">
+				 zuigao = #{zuigao},
+			</if>
+			<if test="dianzhan != null">
+				 dianzhan = #{dianzhan},
+			</if>
+			<if test="zishu != null">
+				 zishu = #{zishu},
+			</if>
+ 		 </set>
+ 		<include refid="base_condition" />
+	</update>
+
+	<!-- 根据PrimaryKey删除-->
+	<delete id="deleteByPrimaryKey">
+		delete from new_rank_day where rank=#{rank} and categoryName=#{categoryName} and day=#{day}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByPrimaryKey" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from new_rank_day where rank=#{rank} and categoryName=#{categoryName} and day=#{day}
+	</select>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM new_rank_day <include refid="query_condition" />
+		 <if test="orderBy!=null">
+			 order by ${orderBy}
+			 <if test="ascOrDesc!=null">
+				 ${ascOrDesc}
+			 </if>
+		 </if>
+		 <if test="page!=null">
+			 limit #{page.start},#{page.end}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM new_rank_day <include refid="query_condition" />
+	</select>
+
+</mapper>

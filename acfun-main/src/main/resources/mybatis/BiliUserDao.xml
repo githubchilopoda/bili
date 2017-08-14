@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crawl.bili.dao.BiliUserDao">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.crawl.bili.entity.po.BiliUser">
+		<!---->
+		<result column="mid" property="mid"  />
+		<!---->
+		<result column="name" property="name"  />
+		<!---->
+		<result column="approve" property="approve"  />
+		<!---->
+		<result column="sex" property="sex"  />
+		<!---->
+		<result column="rank" property="rank"  />
+		<!---->
+		<result column="face" property="face"  />
+		<!---->
+		<result column="coins" property="coins"  />
+		<!---->
+		<result column="displayRank" property="displayRank"  />
+		<!---->
+		<result column="regtime" property="regtime"  />
+		<!---->
+		<result column="spacesta" property="spacesta"  />
+		<!---->
+		<result column="place" property="place"  />
+		<!---->
+		<result column="birthday" property="birthday"  />
+		<!---->
+		<result column="sign" property="sign"  />
+		<!---->
+		<result column="description" property="description"  />
+		<!---->
+		<result column="article" property="article"  />
+		<!---->
+		<result column="levelInfo" property="levelInfo"  />
+		<!---->
+		<result column="pendant" property="pendant"  />
+		<!---->
+		<result column="nameplate" property="nameplate"  />
+		<!---->
+		<result column="officialVerify" property="officialVerify"  />
+		<!---->
+		<result column="toutu" property="toutu"  />
+		<!---->
+		<result column="toutuId" property="toutuId"  />
+		<!---->
+		<result column="theme" property="theme"  />
+		<!---->
+		<result column="themePreview" property="themePreview"  />
+		<!---->
+		<result column="im9Sign" property="im9Sign"  />
+		<!---->
+		<result column="playNum" property="playNum"  />
+		<!---->
+		<result column="fansBadge" property="fansBadge"  />
+		<!---->
+		<result column="crawlTime" property="crawlTime"  />
+		<!---->
+		<result column="lastUpdateTime" property="lastUpdateTime"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 mid,name,approve,sex,rank,face,coins,displayRank,regtime,spacesta,place,birthday,sign,description,article,levelInfo,pendant,nameplate,officialVerify,toutu,toutuId,theme,themePreview,im9Sign,playNum,fansBadge,crawlTime,lastUpdateTime
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="mid != null">
+				 and  mid = #{mid}
+			</if>
+			<if test="name != null and name!=''">
+				 and  name = #{name}
+			</if>
+			<if test="approve != null">
+				 and  approve = #{approve}
+			</if>
+			<if test="sex != null">
+				 and  sex = #{sex}
+			</if>
+			<if test="rank != null">
+				 and  rank = #{rank}
+			</if>
+			<if test="face != null and face!=''">
+				 and  face = #{face}
+			</if>
+			<if test="coins != null">
+				 and  coins = #{coins}
+			</if>
+			<if test="displayRank != null">
+				 and  displayRank = #{displayRank}
+			</if>
+			<if test="regtime != null">
+				 and  regtime = #{regtime}
+			</if>
+			<if test="spacesta != null">
+				 and  spacesta = #{spacesta}
+			</if>
+			<if test="place != null and place!=''">
+				 and  place = #{place}
+			</if>
+			<if test="birthday != null">
+				 and  birthday = #{birthday}
+			</if>
+			<if test="sign != null and sign!=''">
+				 and  sign = #{sign}
+			</if>
+			<if test="description != null and description!=''">
+				 and  description = #{description}
+			</if>
+			<if test="article != null">
+				 and  article = #{article}
+			</if>
+			<if test="levelInfo != null and levelInfo!=''">
+				 and  levelInfo = #{levelInfo}
+			</if>
+			<if test="pendant != null and pendant!=''">
+				 and  pendant = #{pendant}
+			</if>
+			<if test="nameplate != null and nameplate!=''">
+				 and  nameplate = #{nameplate}
+			</if>
+			<if test="officialVerify != null and officialVerify!=''">
+				 and  officialVerify = #{officialVerify}
+			</if>
+			<if test="toutu != null and toutu!=''">
+				 and  toutu = #{toutu}
+			</if>
+			<if test="toutuId != null">
+				 and  toutuId = #{toutuId}
+			</if>
+			<if test="theme != null and theme!=''">
+				 and  theme = #{theme}
+			</if>
+			<if test="themePreview != null and themePreview!=''">
+				 and  themePreview = #{themePreview}
+			</if>
+			<if test="im9Sign != null and im9Sign!=''">
+				 and  im9Sign = #{im9Sign}
+			</if>
+			<if test="playNum != null">
+				 and  playNum = #{playNum}
+			</if>
+			<if test="fansBadge != null">
+				 and  fansBadge = #{fansBadge}
+			</if>
+			<if test="crawlTime != null">
+				 and  crawlTime = #{crawlTime}
+			</if>
+			<if test="lastUpdateTime != null">
+				 and  lastUpdateTime = #{lastUpdateTime}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where> <include refid="base_condition_filed" />	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+			<if test="nameFuzzy!= null  and nameFuzzy!=''">
+				 and  name like concat('%', #{nameFuzzy}, '%')
+			</if>
+			<if test="faceFuzzy!= null  and faceFuzzy!=''">
+				 and  face like concat('%', #{faceFuzzy}, '%')
+			</if>
+			<if test="regtimeStart!= null and regtimeStart!=''">
+				 <![CDATA[ and  regtime>=str_to_date('${regtimeStart}', '%Y-%m-%d') ]]>
+			</if>
+			<if test="regtimeEnd!= null and regtimeEnd!=''">
+				 <![CDATA[ and  regtime< date_sub(str_to_date('${regtimeEnd}','%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+			<if test="placeFuzzy!= null  and placeFuzzy!=''">
+				 and  place like concat('%', #{placeFuzzy}, '%')
+			</if>
+			<if test="birthdayStart!= null and birthdayStart!=''">
+				 <![CDATA[ and  birthday>=str_to_date('${birthdayStart}', '%Y-%m-%d') ]]>
+			</if>
+			<if test="birthdayEnd!= null and birthdayEnd!=''">
+				 <![CDATA[ and  birthday< date_sub(str_to_date('${birthdayEnd}','%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+			<if test="signFuzzy!= null  and signFuzzy!=''">
+				 and  sign like concat('%', #{signFuzzy}, '%')
+			</if>
+			<if test="descriptionFuzzy!= null  and descriptionFuzzy!=''">
+				 and  description like concat('%', #{descriptionFuzzy}, '%')
+			</if>
+			<if test="levelInfoFuzzy!= null  and levelInfoFuzzy!=''">
+				 and  levelInfo like concat('%', #{levelInfoFuzzy}, '%')
+			</if>
+			<if test="pendantFuzzy!= null  and pendantFuzzy!=''">
+				 and  pendant like concat('%', #{pendantFuzzy}, '%')
+			</if>
+			<if test="nameplateFuzzy!= null  and nameplateFuzzy!=''">
+				 and  nameplate like concat('%', #{nameplateFuzzy}, '%')
+			</if>
+			<if test="officialVerifyFuzzy!= null  and officialVerifyFuzzy!=''">
+				 and  officialVerify like concat('%', #{officialVerifyFuzzy}, '%')
+			</if>
+			<if test="toutuFuzzy!= null  and toutuFuzzy!=''">
+				 and  toutu like concat('%', #{toutuFuzzy}, '%')
+			</if>
+			<if test="themeFuzzy!= null  and themeFuzzy!=''">
+				 and  theme like concat('%', #{themeFuzzy}, '%')
+			</if>
+			<if test="themePreviewFuzzy!= null  and themePreviewFuzzy!=''">
+				 and  themePreview like concat('%', #{themePreviewFuzzy}, '%')
+			</if>
+			<if test="im9SignFuzzy!= null  and im9SignFuzzy!=''">
+				 and  im9Sign like concat('%', #{im9SignFuzzy}, '%')
+			</if>
+			<if test="crawlTimeStart!= null and crawlTimeStart!=''">
+				 <![CDATA[ and  crawlTime>=str_to_date('${crawlTimeStart}', '%Y-%m-%d') ]]>
+			</if>
+			<if test="crawlTimeEnd!= null and crawlTimeEnd!=''">
+				 <![CDATA[ and  crawlTime< date_sub(str_to_date('${crawlTimeEnd}','%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+			<if test="lastUpdateTimeStart!= null and lastUpdateTimeStart!=''">
+				 <![CDATA[ and  lastUpdateTime>=str_to_date('${lastUpdateTimeStart}', '%Y-%m-%d') ]]>
+			</if>
+			<if test="lastUpdateTimeEnd!= null and lastUpdateTimeEnd!=''">
+				 <![CDATA[ and  lastUpdateTime< date_sub(str_to_date('${lastUpdateTimeEnd}','%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+	 </where>
+	</sql>
+
+	<!--删除：根据条件删除-->
+	<delete id="delete" parameterType="java.lang.Integer">
+		 DELETE FROM bili_user <include refid="base_condition" />
+	</delete>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.crawl.bili.entity.po.BiliUser">
+		 INSERT ignore INTO bili_user
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="mid != null">
+				 mid,
+			</if>
+			<if test="name != null">
+				 name,
+			</if>
+			<if test="approve != null">
+				 approve,
+			</if>
+			<if test="sex != null">
+				 sex,
+			</if>
+			<if test="rank != null">
+				 rank,
+			</if>
+			<if test="face != null">
+				 face,
+			</if>
+			<if test="coins != null">
+				 coins,
+			</if>
+			<if test="displayRank != null">
+				 displayRank,
+			</if>
+			<if test="regtime != null">
+				 regtime,
+			</if>
+			<if test="spacesta != null">
+				 spacesta,
+			</if>
+			<if test="place != null">
+				 place,
+			</if>
+			<if test="birthday != null">
+				 birthday,
+			</if>
+			<if test="sign != null">
+				 sign,
+			</if>
+			<if test="description != null">
+				 description,
+			</if>
+			<if test="article != null">
+				 article,
+			</if>
+			<if test="levelInfo != null">
+				 levelInfo,
+			</if>
+			<if test="pendant != null">
+				 pendant,
+			</if>
+			<if test="nameplate != null">
+				 nameplate,
+			</if>
+			<if test="officialVerify != null">
+				 officialVerify,
+			</if>
+			<if test="toutu != null">
+				 toutu,
+			</if>
+			<if test="toutuId != null">
+				 toutuId,
+			</if>
+			<if test="theme != null">
+				 theme,
+			</if>
+			<if test="themePreview != null">
+				 themePreview,
+			</if>
+			<if test="im9Sign != null">
+				 im9Sign,
+			</if>
+			<if test="playNum != null">
+				 playNum,
+			</if>
+			<if test="fansBadge != null">
+				 fansBadge,
+			</if>
+			<if test="crawlTime != null">
+				 crawlTime,
+			</if>
+			<if test="lastUpdateTime != null">
+				 lastUpdateTime,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="mid!=null">
+				 #{mid},
+			</if>
+			<if test="name!=null">
+				 #{name},
+			</if>
+			<if test="approve!=null">
+				 #{approve},
+			</if>
+			<if test="sex!=null">
+				 #{sex},
+			</if>
+			<if test="rank!=null">
+				 #{rank},
+			</if>
+			<if test="face!=null">
+				 #{face},
+			</if>
+			<if test="coins!=null">
+				 #{coins},
+			</if>
+			<if test="displayRank!=null">
+				 #{displayRank},
+			</if>
+			<if test="regtime!=null">
+				 #{regtime},
+			</if>
+			<if test="spacesta!=null">
+				 #{spacesta},
+			</if>
+			<if test="place!=null">
+				 #{place},
+			</if>
+			<if test="birthday!=null">
+				 #{birthday},
+			</if>
+			<if test="sign!=null">
+				 #{sign},
+			</if>
+			<if test="description!=null">
+				 #{description},
+			</if>
+			<if test="article!=null">
+				 #{article},
+			</if>
+			<if test="levelInfo!=null">
+				 #{levelInfo},
+			</if>
+			<if test="pendant!=null">
+				 #{pendant},
+			</if>
+			<if test="nameplate!=null">
+				 #{nameplate},
+			</if>
+			<if test="officialVerify!=null">
+				 #{officialVerify},
+			</if>
+			<if test="toutu!=null">
+				 #{toutu},
+			</if>
+			<if test="toutuId!=null">
+				 #{toutuId},
+			</if>
+			<if test="theme!=null">
+				 #{theme},
+			</if>
+			<if test="themePreview!=null">
+				 #{themePreview},
+			</if>
+			<if test="im9Sign!=null">
+				 #{im9Sign},
+			</if>
+			<if test="playNum!=null">
+				 #{playNum},
+			</if>
+			<if test="fansBadge!=null">
+				 #{fansBadge},
+			</if>
+			<if test="crawlTime!=null">
+				 #{crawlTime},
+			</if>
+			<if test="lastUpdateTime!=null">
+				 #{lastUpdateTime},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+		<insert id="insertBatch" parameterType="com.crawl.bili.entity.po.BiliUser">
+		 INSERT INTO bili_user(mid,name,approve,sex,rank,face,coins,displayRank,regtime,spacesta,place,birthday,sign,description,article,levelInfo,pendant,nameplate,officialVerify,toutu,toutuId,theme,themePreview,im9Sign,playNum,fansBadge,crawlTime,lastUpdateTime)values
+			 <foreach collection="list" item="item" separator=",">
+			 (
+			 #{item.mid},#{item.name},#{item.approve},#{item.sex},#{item.rank},#{item.face},#{item.coins},#{item.displayRank},#{item.regtime},#{item.spacesta},#{item.place},#{item.birthday},#{item.sign},#{item.description},#{item.article},#{item.levelInfo},#{item.pendant},#{item.nameplate},#{item.officialVerify},#{item.toutu},#{item.toutuId},#{item.theme},#{item.themePreview},#{item.im9Sign},#{item.playNum},#{item.fansBadge},#{item.crawlTime},#{item.lastUpdateTime}
+			 )
+			 </foreach>
+		</insert>
+
+	<!-- 修 改-->
+	<update id="update" parameterType="com.crawl.bili.entity.po.BiliUser">
+		 UPDATE bili_user
+ 		 <set> 
+			<if test="mid != null">
+				 mid = #{mid},
+			</if>
+			<if test="name != null">
+				 name = #{name},
+			</if>
+			<if test="approve != null">
+				 approve = #{approve},
+			</if>
+			<if test="sex != null">
+				 sex = #{sex},
+			</if>
+			<if test="rank != null">
+				 rank = #{rank},
+			</if>
+			<if test="face != null">
+				 face = #{face},
+			</if>
+			<if test="coins != null">
+				 coins = #{coins},
+			</if>
+			<if test="displayRank != null">
+				 displayRank = #{displayRank},
+			</if>
+			<if test="regtime != null">
+				 regtime = #{regtime},
+			</if>
+			<if test="spacesta != null">
+				 spacesta = #{spacesta},
+			</if>
+			<if test="place != null">
+				 place = #{place},
+			</if>
+			<if test="birthday != null">
+				 birthday = #{birthday},
+			</if>
+			<if test="sign != null">
+				 sign = #{sign},
+			</if>
+			<if test="description != null">
+				 description = #{description},
+			</if>
+			<if test="article != null">
+				 article = #{article},
+			</if>
+			<if test="levelInfo != null">
+				 levelInfo = #{levelInfo},
+			</if>
+			<if test="pendant != null">
+				 pendant = #{pendant},
+			</if>
+			<if test="nameplate != null">
+				 nameplate = #{nameplate},
+			</if>
+			<if test="officialVerify != null">
+				 officialVerify = #{officialVerify},
+			</if>
+			<if test="toutu != null">
+				 toutu = #{toutu},
+			</if>
+			<if test="toutuId != null">
+				 toutuId = #{toutuId},
+			</if>
+			<if test="theme != null">
+				 theme = #{theme},
+			</if>
+			<if test="themePreview != null">
+				 themePreview = #{themePreview},
+			</if>
+			<if test="im9Sign != null">
+				 im9Sign = #{im9Sign},
+			</if>
+			<if test="playNum != null">
+				 playNum = #{playNum},
+			</if>
+			<if test="fansBadge != null">
+				 fansBadge = #{fansBadge},
+			</if>
+			<if test="crawlTime != null">
+				 crawlTime = #{crawlTime},
+			</if>
+			<if test="lastUpdateTime != null">
+				 lastUpdateTime = #{lastUpdateTime},
+			</if>
+ 		 </set>
+ 		<include refid="base_condition" />
+	</update>
+
+	<!-- 根据PrimaryKey删除-->
+	<delete id="deleteByPrimaryKey">
+		delete from bili_user where mid=#{mid}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByPrimaryKey" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from bili_user where mid=#{mid}
+	</select>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM bili_user <include refid="query_condition" />
+		 <if test="orderBy!=null">
+			 order by ${orderBy}
+			 <if test="ascOrDesc!=null">
+				 ${ascOrDesc}
+			 </if>
+		 </if>
+		 <if test="page!=null">
+			 limit #{page.start},#{page.end}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM bili_user <include refid="query_condition" />
+	</select>
+
+</mapper>

@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crawl.webchat.dao.PgcWeekRankDao">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.crawl.webchat.entity.po.PgcWeekRank">
+		<!---->
+		<result column="rank" property="rank"  />
+		<!---->
+		<result column="categoryId" property="categoryId"  />
+		<!---->
+		<result column="categoryName" property="categoryName"  />
+		<!---->
+		<result column="dayBegin" property="dayBegin"  />
+		<!---->
+		<result column="account" property="account"  />
+		<!---->
+		<result column="accountName" property="accountName"  />
+		<!---->
+		<result column="icon" property="icon"  />
+		<!---->
+		<result column="youku" property="youku"  />
+		<!---->
+		<result column="tecent" property="tecent"  />
+		<!---->
+		<result column="iqiyi" property="iqiyi"  />
+		<!---->
+		<result column="toutiao" property="toutiao"  />
+		<!---->
+		<result column="miaopai" property="miaopai"  />
+		<!---->
+		<result column="meipai" property="meipai"  />
+		<!---->
+		<result column="point" property="point"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 rank,categoryId,categoryName,dayBegin,account,accountName,icon,youku,tecent,iqiyi,toutiao,miaopai,meipai,point
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="rank != null">
+				 and  rank = #{rank}
+			</if>
+			<if test="categoryId != null">
+				 and  categoryId = #{categoryId}
+			</if>
+			<if test="categoryName != null and categoryName!=''">
+				 and  categoryName = #{categoryName}
+			</if>
+			<if test="dayBegin != null">
+				 and  dayBegin = #{dayBegin}
+			</if>
+			<if test="account != null and account!=''">
+				 and  account = #{account}
+			</if>
+			<if test="accountName != null and accountName!=''">
+				 and  accountName = #{accountName}
+			</if>
+			<if test="icon != null and icon!=''">
+				 and  icon = #{icon}
+			</if>
+			<if test="youku != null">
+				 and  youku = #{youku}
+			</if>
+			<if test="tecent != null">
+				 and  tecent = #{tecent}
+			</if>
+			<if test="iqiyi != null">
+				 and  iqiyi = #{iqiyi}
+			</if>
+			<if test="toutiao != null">
+				 and  toutiao = #{toutiao}
+			</if>
+			<if test="miaopai != null">
+				 and  miaopai = #{miaopai}
+			</if>
+			<if test="meipai != null">
+				 and  meipai = #{meipai}
+			</if>
+			<if test="point != null">
+				 and  point = #{point}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where> <include refid="base_condition_filed" />	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+			<if test="categoryNameFuzzy!= null  and categoryNameFuzzy!=''">
+				 and  categoryName like concat('%', #{categoryNameFuzzy}, '%')
+			</if>
+			<if test="dayBeginStart!= null and dayBeginStart!=''">
+				 <![CDATA[ and  dayBegin>=str_to_date('${dayBeginStart}', '%Y-%m-%d') ]]>
+			</if>
+			<if test="dayBeginEnd!= null and dayBeginEnd!=''">
+				 <![CDATA[ and  dayBegin< date_sub(str_to_date('${dayBeginEnd}','%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+			<if test="accountFuzzy!= null  and accountFuzzy!=''">
+				 and  account like concat('%', #{accountFuzzy}, '%')
+			</if>
+			<if test="accountNameFuzzy!= null  and accountNameFuzzy!=''">
+				 and  accountName like concat('%', #{accountNameFuzzy}, '%')
+			</if>
+			<if test="iconFuzzy!= null  and iconFuzzy!=''">
+				 and  icon like concat('%', #{iconFuzzy}, '%')
+			</if>
+	 </where>
+	</sql>
+
+	<!--删除：根据条件删除-->
+	<delete id="delete" parameterType="java.util.Map">
+		 DELETE FROM pgc_week_rank <include refid="base_condition" />
+	</delete>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.crawl.webchat.entity.po.PgcWeekRank">
+		 INSERT ignore INTO pgc_week_rank
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="rank != null">
+				 rank,
+			</if>
+			<if test="categoryId != null">
+				 categoryId,
+			</if>
+			<if test="categoryName != null">
+				 categoryName,
+			</if>
+			<if test="dayBegin != null">
+				 dayBegin,
+			</if>
+			<if test="account != null">
+				 account,
+			</if>
+			<if test="accountName != null">
+				 accountName,
+			</if>
+			<if test="icon != null">
+				 icon,
+			</if>
+			<if test="youku != null">
+				 youku,
+			</if>
+			<if test="tecent != null">
+				 tecent,
+			</if>
+			<if test="iqiyi != null">
+				 iqiyi,
+			</if>
+			<if test="toutiao != null">
+				 toutiao,
+			</if>
+			<if test="miaopai != null">
+				 miaopai,
+			</if>
+			<if test="meipai != null">
+				 meipai,
+			</if>
+			<if test="point != null">
+				 point,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="rank!=null">
+				 #{rank},
+			</if>
+			<if test="categoryId!=null">
+				 #{categoryId},
+			</if>
+			<if test="categoryName!=null">
+				 #{categoryName},
+			</if>
+			<if test="dayBegin!=null">
+				 #{dayBegin},
+			</if>
+			<if test="account!=null">
+				 #{account},
+			</if>
+			<if test="accountName!=null">
+				 #{accountName},
+			</if>
+			<if test="icon!=null">
+				 #{icon},
+			</if>
+			<if test="youku!=null">
+				 #{youku},
+			</if>
+			<if test="tecent!=null">
+				 #{tecent},
+			</if>
+			<if test="iqiyi!=null">
+				 #{iqiyi},
+			</if>
+			<if test="toutiao!=null">
+				 #{toutiao},
+			</if>
+			<if test="miaopai!=null">
+				 #{miaopai},
+			</if>
+			<if test="meipai!=null">
+				 #{meipai},
+			</if>
+			<if test="point!=null">
+				 #{point},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+		<insert id="insertBatch" parameterType="com.crawl.webchat.entity.po.PgcWeekRank">
+		 INSERT INTO pgc_week_rank(rank,categoryId,categoryName,dayBegin,account,accountName,icon,youku,tecent,iqiyi,toutiao,miaopai,meipai,point)values
+			 <foreach collection="list" item="item" separator=",">
+			 (
+			 #{item.rank},#{item.categoryId},#{item.categoryName},#{item.dayBegin},#{item.account},#{item.accountName},#{item.icon},#{item.youku},#{item.tecent},#{item.iqiyi},#{item.toutiao},#{item.miaopai},#{item.meipai},#{item.point}
+			 )
+			 </foreach>
+		</insert>
+
+	<!-- 修 改-->
+	<update id="update" parameterType="com.crawl.webchat.entity.po.PgcWeekRank">
+		 UPDATE pgc_week_rank
+ 		 <set> 
+			<if test="rank != null">
+				 rank = #{rank},
+			</if>
+			<if test="categoryId != null">
+				 categoryId = #{categoryId},
+			</if>
+			<if test="categoryName != null">
+				 categoryName = #{categoryName},
+			</if>
+			<if test="dayBegin != null">
+				 dayBegin = #{dayBegin},
+			</if>
+			<if test="account != null">
+				 account = #{account},
+			</if>
+			<if test="accountName != null">
+				 accountName = #{accountName},
+			</if>
+			<if test="icon != null">
+				 icon = #{icon},
+			</if>
+			<if test="youku != null">
+				 youku = #{youku},
+			</if>
+			<if test="tecent != null">
+				 tecent = #{tecent},
+			</if>
+			<if test="iqiyi != null">
+				 iqiyi = #{iqiyi},
+			</if>
+			<if test="toutiao != null">
+				 toutiao = #{toutiao},
+			</if>
+			<if test="miaopai != null">
+				 miaopai = #{miaopai},
+			</if>
+			<if test="meipai != null">
+				 meipai = #{meipai},
+			</if>
+			<if test="point != null">
+				 point = #{point},
+			</if>
+ 		 </set>
+ 		<include refid="base_condition" />
+	</update>
+
+	<!-- 根据PrimaryKey删除-->
+	<delete id="deleteByPrimaryKey">
+		delete from pgc_week_rank where rank=#{rank} and categoryId=#{categoryId} and dayBegin=#{dayBegin}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByPrimaryKey" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from pgc_week_rank where rank=#{rank} and categoryId=#{categoryId} and dayBegin=#{dayBegin}
+	</select>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM pgc_week_rank <include refid="query_condition" />
+		 <if test="orderBy!=null">
+			 order by ${orderBy}
+			 <if test="ascOrDesc!=null">
+				 ${ascOrDesc}
+			 </if>
+		 </if>
+		 <if test="page!=null">
+			 limit #{page.start},#{page.end}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM pgc_week_rank <include refid="query_condition" />
+	</select>
+
+</mapper>

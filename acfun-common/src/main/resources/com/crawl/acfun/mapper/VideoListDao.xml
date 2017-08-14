@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crawl.acfun.dao.VideoListDao">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.crawl.acfun.entity.po.VideoList">
+		<!---->
+		<result column="id" property="id"  />
+		<!---->
+		<result column="bananaCount" property="bananaCount"  />
+		<!---->
+		<result column="channelId" property="channelId"  />
+		<!---->
+		<result column="channelPath" property="channelPath"  />
+		<!---->
+		<result column="commentCount" property="commentCount"  />
+		<!---->
+		<result column="contributeTime" property="contributeTime"  />
+		<!---->
+		<result column="coverImage" property="coverImage"  />
+		<!---->
+		<result column="danmuSize" property="danmuSize"  />
+		<!---->
+		<result column="description" property="description"  />
+		<!---->
+		<result column="duration" property="duration"  />
+		<!---->
+		<result column="favoriteCount" property="favoriteCount"  />
+		<!---->
+		<result column="isTopLevel" property="isTopLevel"  />
+		<!---->
+		<result column="isTudouDomain" property="isTudouDomain"  />
+		<!---->
+		<result column="latestCommentTime" property="latestCommentTime"  />
+		<!---->
+		<result column="parentChannelId" property="parentChannelId"  />
+		<!---->
+		<result column="title" property="title"  />
+		<!---->
+		<result column="userAvatar" property="userAvatar"  />
+		<!---->
+		<result column="userId" property="userId"  />
+		<!---->
+		<result column="link" property="link"  />
+		<!---->
+		<result column="username" property="username"  />
+		<!---->
+		<result column="verified" property="verified"  />
+		<!---->
+		<result column="videoId" property="videoId"  />
+		<!---->
+		<result column="viewCount" property="viewCount"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 id,bananaCount,channelId,channelPath,commentCount,contributeTime,coverImage,danmuSize,description,duration,favoriteCount,isTopLevel,isTudouDomain,latestCommentTime,parentChannelId,title,userAvatar,userId,link,username,verified,videoId,viewCount
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="id != null">
+				 and  id = #{id}
+			</if>
+			<if test="bananaCount != null">
+				 and  bananaCount = #{bananaCount}
+			</if>
+			<if test="channelId != null">
+				 and  channelId = #{channelId}
+			</if>
+			<if test="channelPath != null and channelPath!=''">
+				 and  channelPath = #{channelPath}
+			</if>
+			<if test="commentCount != null">
+				 and  commentCount = #{commentCount}
+			</if>
+			<if test="contributeTime != null">
+				 and  contributeTime = #{contributeTime}
+			</if>
+			<if test="coverImage != null and coverImage!=''">
+				 and  coverImage = #{coverImage}
+			</if>
+			<if test="danmuSize != null">
+				 and  danmuSize = #{danmuSize}
+			</if>
+			<if test="description != null and description!=''">
+				 and  description = #{description}
+			</if>
+			<if test="duration != null">
+				 and  duration = #{duration}
+			</if>
+			<if test="favoriteCount != null">
+				 and  favoriteCount = #{favoriteCount}
+			</if>
+			<if test="isTopLevel != null">
+				 and  isTopLevel = #{isTopLevel}
+			</if>
+			<if test="isTudouDomain != null">
+				 and  isTudouDomain = #{isTudouDomain}
+			</if>
+			<if test="latestCommentTime != null">
+				 and  latestCommentTime = #{latestCommentTime}
+			</if>
+			<if test="parentChannelId != null">
+				 and  parentChannelId = #{parentChannelId}
+			</if>
+			<if test="title != null and title!=''">
+				 and  title = #{title}
+			</if>
+			<if test="userAvatar != null and userAvatar!=''">
+				 and  userAvatar = #{userAvatar}
+			</if>
+			<if test="userId != null">
+				 and  userId = #{userId}
+			</if>
+			<if test="link != null and link!=''">
+				 and  link = #{link}
+			</if>
+			<if test="username != null and username!=''">
+				 and  username = #{username}
+			</if>
+			<if test="verified != null">
+				 and  verified = #{verified}
+			</if>
+			<if test="videoId != null">
+				 and  videoId = #{videoId}
+			</if>
+			<if test="viewCount != null">
+				 and  viewCount = #{viewCount}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where> <include refid="base_condition_filed" />	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+			<if test="channelPathFuzzy!= null  and channelPathFuzzy!=''">
+				 and  channelPath like concat('%', #{channelPathFuzzy}, '%')
+			</if>
+			<if test="contributeTimeStart!= null and contributeTimeStart!=''">
+				 <![CDATA[ and  contributeTime>=str_to_date('${contributeTimeStart}', '%Y-%m-%d') ]]>
+			</if>
+			<if test="contributeTimeEnd!= null and contributeTimeEnd!=''">
+				 <![CDATA[ and  contributeTime< date_sub(str_to_date('${contributeTimeEnd}','%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+			<if test="coverImageFuzzy!= null  and coverImageFuzzy!=''">
+				 and  coverImage like concat('%', #{coverImageFuzzy}, '%')
+			</if>
+			<if test="descriptionFuzzy!= null  and descriptionFuzzy!=''">
+				 and  description like concat('%', #{descriptionFuzzy}, '%')
+			</if>
+			<if test="latestCommentTimeStart!= null and latestCommentTimeStart!=''">
+				 <![CDATA[ and  latestCommentTime>=str_to_date('${latestCommentTimeStart}', '%Y-%m-%d') ]]>
+			</if>
+			<if test="latestCommentTimeEnd!= null and latestCommentTimeEnd!=''">
+				 <![CDATA[ and  latestCommentTime< date_sub(str_to_date('${latestCommentTimeEnd}','%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+			<if test="titleFuzzy!= null  and titleFuzzy!=''">
+				 and  title like concat('%', #{titleFuzzy}, '%')
+			</if>
+			<if test="userAvatarFuzzy!= null  and userAvatarFuzzy!=''">
+				 and  userAvatar like concat('%', #{userAvatarFuzzy}, '%')
+			</if>
+			<if test="linkFuzzy!= null  and linkFuzzy!=''">
+				 and  link like concat('%', #{linkFuzzy}, '%')
+			</if>
+			<if test="usernameFuzzy!= null  and usernameFuzzy!=''">
+				 and  username like concat('%', #{usernameFuzzy}, '%')
+			</if>
+	 </where>
+	</sql>
+
+	<!--删除：根据条件删除-->
+	<delete id="delete" parameterType="java.lang.Integer">
+		 DELETE FROM video_list <include refid="base_condition" />
+	</delete>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.crawl.acfun.entity.po.VideoList">
+		 INSERT INTO video_list
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null">
+				 id,
+			</if>
+			<if test="bananaCount != null">
+				 bananaCount,
+			</if>
+			<if test="channelId != null">
+				 channelId,
+			</if>
+			<if test="channelPath != null">
+				 channelPath,
+			</if>
+			<if test="commentCount != null">
+				 commentCount,
+			</if>
+			<if test="contributeTime != null">
+				 contributeTime,
+			</if>
+			<if test="coverImage != null">
+				 coverImage,
+			</if>
+			<if test="danmuSize != null">
+				 danmuSize,
+			</if>
+			<if test="description != null">
+				 description,
+			</if>
+			<if test="duration != null">
+				 duration,
+			</if>
+			<if test="favoriteCount != null">
+				 favoriteCount,
+			</if>
+			<if test="isTopLevel != null">
+				 isTopLevel,
+			</if>
+			<if test="isTudouDomain != null">
+				 isTudouDomain,
+			</if>
+			<if test="latestCommentTime != null">
+				 latestCommentTime,
+			</if>
+			<if test="parentChannelId != null">
+				 parentChannelId,
+			</if>
+			<if test="title != null">
+				 title,
+			</if>
+			<if test="userAvatar != null">
+				 userAvatar,
+			</if>
+			<if test="userId != null">
+				 userId,
+			</if>
+			<if test="link != null">
+				 link,
+			</if>
+			<if test="username != null">
+				 username,
+			</if>
+			<if test="verified != null">
+				 verified,
+			</if>
+			<if test="videoId != null">
+				 videoId,
+			</if>
+			<if test="viewCount != null">
+				 viewCount,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id!=null">
+				 #{id},
+			</if>
+			<if test="bananaCount!=null">
+				 #{bananaCount},
+			</if>
+			<if test="channelId!=null">
+				 #{channelId},
+			</if>
+			<if test="channelPath!=null">
+				 #{channelPath},
+			</if>
+			<if test="commentCount!=null">
+				 #{commentCount},
+			</if>
+			<if test="contributeTime!=null">
+				 #{contributeTime},
+			</if>
+			<if test="coverImage!=null">
+				 #{coverImage},
+			</if>
+			<if test="danmuSize!=null">
+				 #{danmuSize},
+			</if>
+			<if test="description!=null">
+				 #{description},
+			</if>
+			<if test="duration!=null">
+				 #{duration},
+			</if>
+			<if test="favoriteCount!=null">
+				 #{favoriteCount},
+			</if>
+			<if test="isTopLevel!=null">
+				 #{isTopLevel},
+			</if>
+			<if test="isTudouDomain!=null">
+				 #{isTudouDomain},
+			</if>
+			<if test="latestCommentTime!=null">
+				 #{latestCommentTime},
+			</if>
+			<if test="parentChannelId!=null">
+				 #{parentChannelId},
+			</if>
+			<if test="title!=null">
+				 #{title},
+			</if>
+			<if test="userAvatar!=null">
+				 #{userAvatar},
+			</if>
+			<if test="userId!=null">
+				 #{userId},
+			</if>
+			<if test="link!=null">
+				 #{link},
+			</if>
+			<if test="username!=null">
+				 #{username},
+			</if>
+			<if test="verified!=null">
+				 #{verified},
+			</if>
+			<if test="videoId!=null">
+				 #{videoId},
+			</if>
+			<if test="viewCount!=null">
+				 #{viewCount},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+		<insert id="insertBatch" parameterType="com.crawl.acfun.entity.po.VideoList">
+		 INSERT INTO video_list(id,bananaCount,channelId,channelPath,commentCount,contributeTime,coverImage,danmuSize,description,duration,favoriteCount,isTopLevel,isTudouDomain,latestCommentTime,parentChannelId,title,userAvatar,userId,link,username,verified,videoId,viewCount)values
+			 <foreach collection="list" item="item" separator=",">
+			 (
+			 #{item.id},#{item.bananaCount},#{item.channelId},#{item.channelPath},#{item.commentCount},#{item.contributeTime},#{item.coverImage},#{item.danmuSize},#{item.description},#{item.duration},#{item.favoriteCount},#{item.isTopLevel},#{item.isTudouDomain},#{item.latestCommentTime},#{item.parentChannelId},#{item.title},#{item.userAvatar},#{item.userId},#{item.link},#{item.username},#{item.verified},#{item.videoId},#{item.viewCount}
+			 )
+			 </foreach>
+		</insert>
+
+	<!-- 修 改-->
+	<update id="update" parameterType="com.crawl.acfun.entity.po.VideoList">
+		 UPDATE video_list
+ 		 <set> 
+			<if test="id != null">
+				 id = #{id},
+			</if>
+			<if test="bananaCount != null">
+				 bananaCount = #{bananaCount},
+			</if>
+			<if test="channelId != null">
+				 channelId = #{channelId},
+			</if>
+			<if test="channelPath != null">
+				 channelPath = #{channelPath},
+			</if>
+			<if test="commentCount != null">
+				 commentCount = #{commentCount},
+			</if>
+			<if test="contributeTime != null">
+				 contributeTime = #{contributeTime},
+			</if>
+			<if test="coverImage != null">
+				 coverImage = #{coverImage},
+			</if>
+			<if test="danmuSize != null">
+				 danmuSize = #{danmuSize},
+			</if>
+			<if test="description != null">
+				 description = #{description},
+			</if>
+			<if test="duration != null">
+				 duration = #{duration},
+			</if>
+			<if test="favoriteCount != null">
+				 favoriteCount = #{favoriteCount},
+			</if>
+			<if test="isTopLevel != null">
+				 isTopLevel = #{isTopLevel},
+			</if>
+			<if test="isTudouDomain != null">
+				 isTudouDomain = #{isTudouDomain},
+			</if>
+			<if test="latestCommentTime != null">
+				 latestCommentTime = #{latestCommentTime},
+			</if>
+			<if test="parentChannelId != null">
+				 parentChannelId = #{parentChannelId},
+			</if>
+			<if test="title != null">
+				 title = #{title},
+			</if>
+			<if test="userAvatar != null">
+				 userAvatar = #{userAvatar},
+			</if>
+			<if test="userId != null">
+				 userId = #{userId},
+			</if>
+			<if test="link != null">
+				 link = #{link},
+			</if>
+			<if test="username != null">
+				 username = #{username},
+			</if>
+			<if test="verified != null">
+				 verified = #{verified},
+			</if>
+			<if test="videoId != null">
+				 videoId = #{videoId},
+			</if>
+			<if test="viewCount != null">
+				 viewCount = #{viewCount},
+			</if>
+ 		 </set>
+ 		<include refid="base_condition" />
+	</update>
+
+	<!-- 根据PrimaryKey删除-->
+	<delete id="deleteByPrimaryKey">
+		delete from video_list where id=#{id}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByPrimaryKey" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from video_list where id=#{id}
+	</select>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM video_list <include refid="query_condition" />
+		 <if test="orderBy!=null">
+			 order by ${orderBy}
+			 <if test="ascOrDesc!=null">
+				 ${ascOrDesc}
+			 </if>
+		 </if>
+		 <if test="page!=null">
+			 limit #{page.start},#{page.end}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM video_list <include refid="query_condition" />
+	</select>
+
+</mapper>

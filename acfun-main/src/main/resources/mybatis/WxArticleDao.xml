@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crawl.webchat.dao.WxArticleDao">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.crawl.webchat.entity.po.WxArticle">
+		<!---->
+		<result column="mid" property="mid"  />
+		<!---->
+		<result column="idx" property="idx"  />
+		<!---->
+		<result column="sn" property="sn"  />
+		<!---->
+		<result column="author" property="author"  />
+		<!---->
+		<result column="biz" property="biz"  />
+		<!---->
+		<result column="bizDecoded" property="bizDecoded"  />
+		<!---->
+		<result column="title" property="title"  />
+		<!---->
+		<result column="description" property="description"  />
+		<!---->
+		<result column="viewNumber" property="viewNumber"  />
+		<!---->
+		<result column="starNumber" property="starNumber"  />
+		<!---->
+		<result column="publishTime" property="publishTime"  />
+		<!---->
+		<result column="level" property="level"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 mid,idx,sn,author,biz,bizDecoded,title,description,viewNumber,starNumber,publishTime,level
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="mid != null">
+				 and  mid = #{mid}
+			</if>
+			<if test="idx != null">
+				 and  idx = #{idx}
+			</if>
+			<if test="sn != null and sn!=''">
+				 and  sn = #{sn}
+			</if>
+			<if test="author != null and author!=''">
+				 and  author = #{author}
+			</if>
+			<if test="biz != null and biz!=''">
+				 and  biz = #{biz}
+			</if>
+			<if test="bizDecoded != null">
+				 and  bizDecoded = #{bizDecoded}
+			</if>
+			<if test="title != null and title!=''">
+				 and  title = #{title}
+			</if>
+			<if test="description != null and description!=''">
+				 and  description = #{description}
+			</if>
+			<if test="viewNumber != null">
+				 and  viewNumber = #{viewNumber}
+			</if>
+			<if test="starNumber != null">
+				 and  starNumber = #{starNumber}
+			</if>
+			<if test="publishTime != null">
+				 and  publishTime = #{publishTime}
+			</if>
+			<if test="level != null">
+				 and  level = #{level}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where> <include refid="base_condition_filed" />	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+			<if test="snFuzzy!= null  and snFuzzy!=''">
+				 and  sn like concat('%', #{snFuzzy}, '%')
+			</if>
+			<if test="authorFuzzy!= null  and authorFuzzy!=''">
+				 and  author like concat('%', #{authorFuzzy}, '%')
+			</if>
+			<if test="bizFuzzy!= null  and bizFuzzy!=''">
+				 and  biz like concat('%', #{bizFuzzy}, '%')
+			</if>
+			<if test="titleFuzzy!= null  and titleFuzzy!=''">
+				 and  title like concat('%', #{titleFuzzy}, '%')
+			</if>
+			<if test="descriptionFuzzy!= null  and descriptionFuzzy!=''">
+				 and  description like concat('%', #{descriptionFuzzy}, '%')
+			</if>
+			<if test="publishTimeStart!= null and publishTimeStart!=''">
+				 <![CDATA[ and  publishTime>=str_to_date('${publishTimeStart}', '%Y-%m-%d') ]]>
+			</if>
+			<if test="publishTimeEnd!= null and publishTimeEnd!=''">
+				 <![CDATA[ and  publishTime< date_sub(str_to_date('${publishTimeEnd}','%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+	 </where>
+	</sql>
+
+	<!--删除：根据条件删除-->
+	<delete id="delete" parameterType="java.lang.Long">
+		 DELETE FROM wx_article <include refid="base_condition" />
+	</delete>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.crawl.webchat.entity.po.WxArticle">
+		 INSERT ignore INTO wx_article
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="mid != null">
+				 mid,
+			</if>
+			<if test="idx != null">
+				 idx,
+			</if>
+			<if test="sn != null">
+				 sn,
+			</if>
+			<if test="author != null">
+				 author,
+			</if>
+			<if test="biz != null">
+				 biz,
+			</if>
+			<if test="bizDecoded != null">
+				 bizDecoded,
+			</if>
+			<if test="title != null">
+				 title,
+			</if>
+			<if test="description != null">
+				 description,
+			</if>
+			<if test="viewNumber != null">
+				 viewNumber,
+			</if>
+			<if test="starNumber != null">
+				 starNumber,
+			</if>
+			<if test="publishTime != null">
+				 publishTime,
+			</if>
+			<if test="level != null">
+				 level,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="mid!=null">
+				 #{mid},
+			</if>
+			<if test="idx!=null">
+				 #{idx},
+			</if>
+			<if test="sn!=null">
+				 #{sn},
+			</if>
+			<if test="author!=null">
+				 #{author},
+			</if>
+			<if test="biz!=null">
+				 #{biz},
+			</if>
+			<if test="bizDecoded!=null">
+				 #{bizDecoded},
+			</if>
+			<if test="title!=null">
+				 #{title},
+			</if>
+			<if test="description!=null">
+				 #{description},
+			</if>
+			<if test="viewNumber!=null">
+				 #{viewNumber},
+			</if>
+			<if test="starNumber!=null">
+				 #{starNumber},
+			</if>
+			<if test="publishTime!=null">
+				 #{publishTime},
+			</if>
+			<if test="level!=null">
+				 #{level},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+		<insert id="insertBatch" parameterType="com.crawl.webchat.entity.po.WxArticle">
+		 INSERT INTO wx_article(mid,idx,sn,author,biz,bizDecoded,title,description,viewNumber,starNumber,publishTime,level)values
+			 <foreach collection="list" item="item" separator=",">
+			 (
+			 #{item.mid},#{item.idx},#{item.sn},#{item.author},#{item.biz},#{item.bizDecoded},#{item.title},#{item.description},#{item.viewNumber},#{item.starNumber},#{item.publishTime},#{item.level}
+			 )
+			 </foreach>
+		</insert>
+
+	<!-- 修 改-->
+	<update id="update" parameterType="com.crawl.webchat.entity.po.WxArticle">
+		 UPDATE wx_article
+ 		 <set> 
+			<if test="mid != null">
+				 mid = #{mid},
+			</if>
+			<if test="idx != null">
+				 idx = #{idx},
+			</if>
+			<if test="sn != null">
+				 sn = #{sn},
+			</if>
+			<if test="author != null">
+				 author = #{author},
+			</if>
+			<if test="biz != null">
+				 biz = #{biz},
+			</if>
+			<if test="bizDecoded != null">
+				 bizDecoded = #{bizDecoded},
+			</if>
+			<if test="title != null">
+				 title = #{title},
+			</if>
+			<if test="description != null">
+				 description = #{description},
+			</if>
+			<if test="viewNumber != null">
+				 viewNumber = #{viewNumber},
+			</if>
+			<if test="starNumber != null">
+				 starNumber = #{starNumber},
+			</if>
+			<if test="publishTime != null">
+				 publishTime = #{publishTime},
+			</if>
+			<if test="level != null">
+				 level = #{level},
+			</if>
+ 		 </set>
+ 		<include refid="base_condition" />
+	</update>
+
+	<!-- 根据PrimaryKey删除-->
+	<delete id="deleteByPrimaryKey">
+		delete from wx_article where mid=#{mid}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByPrimaryKey" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from wx_article where mid=#{mid}
+	</select>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM wx_article <include refid="query_condition" />
+		 <if test="orderBy!=null">
+			 order by ${orderBy}
+			 <if test="ascOrDesc!=null">
+				 ${ascOrDesc}
+			 </if>
+		 </if>
+		 <if test="page!=null">
+			 limit #{page.start},#{page.end}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM wx_article <include refid="query_condition" />
+	</select>
+
+</mapper>

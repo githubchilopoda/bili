@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crawl.acfun.dao.WebDao">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.crawl.acfun.entity.po.Web">
+		<!---->
+		<result column="webId" property="webId"  />
+		<!---->
+		<result column="name" property="name"  />
+		<!---->
+		<result column="url" property="url"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 webId,name,url
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="webId != null">
+				 and  webId = #{webId}
+			</if>
+			<if test="name != null and name!=''">
+				 and  name = #{name}
+			</if>
+			<if test="url != null and url!=''">
+				 and  url = #{url}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where> <include refid="base_condition_filed" />	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+			<if test="nameFuzzy!= null  and nameFuzzy!=''">
+				 and  name like concat('%', #{nameFuzzy}, '%')
+			</if>
+			<if test="urlFuzzy!= null  and urlFuzzy!=''">
+				 and  url like concat('%', #{urlFuzzy}, '%')
+			</if>
+	 </where>
+	</sql>
+
+	<!--删除：根据条件删除-->
+	<delete id="delete" parameterType="java.lang.Integer">
+		 DELETE FROM web <include refid="base_condition" />
+	</delete>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.crawl.acfun.entity.po.Web">
+		 INSERT INTO web
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="webId != null">
+				 webId,
+			</if>
+			<if test="name != null">
+				 name,
+			</if>
+			<if test="url != null">
+				 url,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="webId!=null">
+				 #{webId},
+			</if>
+			<if test="name!=null">
+				 #{name},
+			</if>
+			<if test="url!=null">
+				 #{url},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+		<insert id="insertBatch" parameterType="com.crawl.acfun.entity.po.Web">
+		 INSERT INTO web(webId,name,url)values
+			 <foreach collection="list" item="item" separator=",">
+			 (
+			 #{item.webId},#{item.name},#{item.url}
+			 )
+			 </foreach>
+		</insert>
+
+	<!-- 修 改-->
+	<update id="update" parameterType="com.crawl.acfun.entity.po.Web">
+		 UPDATE web
+ 		 <set> 
+			<if test="webId != null">
+				 webId = #{webId},
+			</if>
+			<if test="name != null">
+				 name = #{name},
+			</if>
+			<if test="url != null">
+				 url = #{url},
+			</if>
+ 		 </set>
+ 		<include refid="base_condition" />
+	</update>
+
+	<!-- 根据PrimaryKey删除-->
+	<delete id="deleteByPrimaryKey">
+		delete from web where webId=#{webId}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByPrimaryKey" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from web where webId=#{webId}
+	</select>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM web <include refid="query_condition" />
+		 <if test="orderBy!=null">
+			 order by ${orderBy}
+			 <if test="ascOrDesc!=null">
+				 ${ascOrDesc}
+			 </if>
+		 </if>
+		 <if test="page!=null">
+			 limit #{page.start},#{page.end}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM web <include refid="query_condition" />
+	</select>
+
+</mapper>

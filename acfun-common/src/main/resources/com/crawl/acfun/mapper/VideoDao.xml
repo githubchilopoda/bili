@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crawl.acfun.dao.VideoDao">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.crawl.acfun.entity.po.Video">
+		<!---->
+		<result column="vid" property="vid"  />
+		<!---->
+		<result column="webId" property="webId"  />
+		<!---->
+		<result column="url" property="url"  />
+		<!---->
+		<result column="title" property="title"  />
+		<!---->
+		<result column="source" property="source"  />
+		<!---->
+		<result column="img" property="img"  />
+		<!---->
+		<result column="views" property="views"  />
+		<!---->
+		<result column="danmu" property="danmu"  />
+		<!---->
+		<result column="remark" property="remark"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 vid,webId,url,title,source,img,views,danmu,remark
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="vid != null">
+				 and  vid = #{vid}
+			</if>
+			<if test="webId != null">
+				 and  webId = #{webId}
+			</if>
+			<if test="url != null and url!=''">
+				 and  url = #{url}
+			</if>
+			<if test="title != null and title!=''">
+				 and  title = #{title}
+			</if>
+			<if test="source != null and source!=''">
+				 and  source = #{source}
+			</if>
+			<if test="img != null and img!=''">
+				 and  img = #{img}
+			</if>
+			<if test="views != null">
+				 and  views = #{views}
+			</if>
+			<if test="danmu != null">
+				 and  danmu = #{danmu}
+			</if>
+			<if test="remark != null and remark!=''">
+				 and  remark = #{remark}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where> <include refid="base_condition_filed" />	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+			<if test="urlFuzzy!= null  and urlFuzzy!=''">
+				 and  url like concat('%', #{urlFuzzy}, '%')
+			</if>
+			<if test="titleFuzzy!= null  and titleFuzzy!=''">
+				 and  title like concat('%', #{titleFuzzy}, '%')
+			</if>
+			<if test="sourceFuzzy!= null  and sourceFuzzy!=''">
+				 and  source like concat('%', #{sourceFuzzy}, '%')
+			</if>
+			<if test="imgFuzzy!= null  and imgFuzzy!=''">
+				 and  img like concat('%', #{imgFuzzy}, '%')
+			</if>
+			<if test="remarkFuzzy!= null  and remarkFuzzy!=''">
+				 and  remark like concat('%', #{remarkFuzzy}, '%')
+			</if>
+	 </where>
+	</sql>
+
+	<!--删除：根据条件删除-->
+	<delete id="delete" parameterType="java.lang.Integer">
+		 DELETE FROM video <include refid="base_condition" />
+	</delete>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.crawl.acfun.entity.po.Video">
+		 INSERT INTO video
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="vid != null">
+				 vid,
+			</if>
+			<if test="webId != null">
+				 webId,
+			</if>
+			<if test="url != null">
+				 url,
+			</if>
+			<if test="title != null">
+				 title,
+			</if>
+			<if test="source != null">
+				 source,
+			</if>
+			<if test="img != null">
+				 img,
+			</if>
+			<if test="views != null">
+				 views,
+			</if>
+			<if test="danmu != null">
+				 danmu,
+			</if>
+			<if test="remark != null">
+				 remark,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="vid!=null">
+				 #{vid},
+			</if>
+			<if test="webId!=null">
+				 #{webId},
+			</if>
+			<if test="url!=null">
+				 #{url},
+			</if>
+			<if test="title!=null">
+				 #{title},
+			</if>
+			<if test="source!=null">
+				 #{source},
+			</if>
+			<if test="img!=null">
+				 #{img},
+			</if>
+			<if test="views!=null">
+				 #{views},
+			</if>
+			<if test="danmu!=null">
+				 #{danmu},
+			</if>
+			<if test="remark!=null">
+				 #{remark},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+		<insert id="insertBatch" parameterType="com.crawl.acfun.entity.po.Video">
+		 INSERT INTO video(vid,webId,url,title,source,img,views,danmu,remark)values
+			 <foreach collection="list" item="item" separator=",">
+			 (
+			 #{item.vid},#{item.webId},#{item.url},#{item.title},#{item.source},#{item.img},#{item.views},#{item.danmu},#{item.remark}
+			 )
+			 </foreach>
+		</insert>
+
+	<!-- 修 改-->
+	<update id="update" parameterType="com.crawl.acfun.entity.po.Video">
+		 UPDATE video
+ 		 <set> 
+			<if test="vid != null">
+				 vid = #{vid},
+			</if>
+			<if test="webId != null">
+				 webId = #{webId},
+			</if>
+			<if test="url != null">
+				 url = #{url},
+			</if>
+			<if test="title != null">
+				 title = #{title},
+			</if>
+			<if test="source != null">
+				 source = #{source},
+			</if>
+			<if test="img != null">
+				 img = #{img},
+			</if>
+			<if test="views != null">
+				 views = #{views},
+			</if>
+			<if test="danmu != null">
+				 danmu = #{danmu},
+			</if>
+			<if test="remark != null">
+				 remark = #{remark},
+			</if>
+ 		 </set>
+ 		<include refid="base_condition" />
+	</update>
+
+	<!-- 根据PrimaryKey删除-->
+	<delete id="deleteByPrimaryKey">
+		delete from video where vid=#{vid} and webId=#{webId}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByPrimaryKey" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from video where vid=#{vid} and webId=#{webId}
+	</select>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM video <include refid="query_condition" />
+		 <if test="orderBy!=null">
+			 order by ${orderBy}
+			 <if test="ascOrDesc!=null">
+				 ${ascOrDesc}
+			 </if>
+		 </if>
+		 <if test="page!=null">
+			 limit #{page.start},#{page.end}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM video <include refid="query_condition" />
+	</select>
+
+</mapper>

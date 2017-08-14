@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crawl.bili.dao.BiliFunDao">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.crawl.bili.entity.po.BiliFun">
+		<!---->
+		<result column="aid" property="aid"  />
+		<!---->
+		<result column="videos" property="videos"  />
+		<!---->
+		<result column="tid" property="tid"  />
+		<!---->
+		<result column="tname" property="tname"  />
+		<!---->
+		<result column="copyright" property="copyright"  />
+		<!---->
+		<result column="pic" property="pic"  />
+		<!---->
+		<result column="title" property="title"  />
+		<!---->
+		<result column="attribute" property="attribute"  />
+		<!---->
+		<result column="tags" property="tags"  />
+		<!---->
+		<result column="duration" property="duration"  />
+		<!---->
+		<result column="rights" property="rights"  />
+		<!---->
+		<result column="stat" property="stat"  />
+		<!---->
+		<result column="play" property="play"  />
+		<!---->
+		<result column="favorites" property="favorites"  />
+		<!---->
+		<result column="videoReview" property="videoReview"  />
+		<!---->
+		<result column="createTime" property="createTime"  />
+		<!---->
+		<result column="description" property="description"  />
+		<!---->
+		<result column="mid" property="mid"  />
+		<!---->
+		<result column="author" property="author"  />
+		<!---->
+		<result column="face" property="face"  />
+		<!---->
+		<result column="crawlTime" property="crawlTime"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 aid,videos,tid,tname,copyright,pic,title,attribute,tags,duration,rights,stat,play,favorites,videoReview,createTime,description,mid,author,face,crawlTime
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="aid != null">
+				 and  aid = #{aid}
+			</if>
+			<if test="videos != null">
+				 and  videos = #{videos}
+			</if>
+			<if test="tid != null">
+				 and  tid = #{tid}
+			</if>
+			<if test="tname != null and tname!=''">
+				 and  tname = #{tname}
+			</if>
+			<if test="copyright != null">
+				 and  copyright = #{copyright}
+			</if>
+			<if test="pic != null and pic!=''">
+				 and  pic = #{pic}
+			</if>
+			<if test="title != null and title!=''">
+				 and  title = #{title}
+			</if>
+			<if test="attribute != null">
+				 and  attribute = #{attribute}
+			</if>
+			<if test="tags != null and tags!=''">
+				 and  tags = #{tags}
+			</if>
+			<if test="duration != null">
+				 and  duration = #{duration}
+			</if>
+			<if test="rights != null and rights!=''">
+				 and  rights = #{rights}
+			</if>
+			<if test="stat != null and stat!=''">
+				 and  stat = #{stat}
+			</if>
+			<if test="play != null">
+				 and  play = #{play}
+			</if>
+			<if test="favorites != null">
+				 and  favorites = #{favorites}
+			</if>
+			<if test="videoReview != null">
+				 and  videoReview = #{videoReview}
+			</if>
+			<if test="createTime != null">
+				 and  createTime = #{createTime}
+			</if>
+			<if test="description != null and description!=''">
+				 and  description = #{description}
+			</if>
+			<if test="mid != null">
+				 and  mid = #{mid}
+			</if>
+			<if test="author != null and author!=''">
+				 and  author = #{author}
+			</if>
+			<if test="face != null and face!=''">
+				 and  face = #{face}
+			</if>
+			<if test="crawlTime != null">
+				 and  crawlTime = #{crawlTime}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where> <include refid="base_condition_filed" />	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+			<if test="tnameFuzzy!= null  and tnameFuzzy!=''">
+				 and  tname like concat('%', #{tnameFuzzy}, '%')
+			</if>
+			<if test="picFuzzy!= null  and picFuzzy!=''">
+				 and  pic like concat('%', #{picFuzzy}, '%')
+			</if>
+			<if test="titleFuzzy!= null  and titleFuzzy!=''">
+				 and  title like concat('%', #{titleFuzzy}, '%')
+			</if>
+			<if test="tagsFuzzy!= null  and tagsFuzzy!=''">
+				 and  tags like concat('%', #{tagsFuzzy}, '%')
+			</if>
+			<if test="rightsFuzzy!= null  and rightsFuzzy!=''">
+				 and  rights like concat('%', #{rightsFuzzy}, '%')
+			</if>
+			<if test="statFuzzy!= null  and statFuzzy!=''">
+				 and  stat like concat('%', #{statFuzzy}, '%')
+			</if>
+			<if test="createTimeStart!= null and createTimeStart!=''">
+				 <![CDATA[ and  createTime>=str_to_date('${createTimeStart}', '%Y-%m-%d') ]]>
+			</if>
+			<if test="createTimeEnd!= null and createTimeEnd!=''">
+				 <![CDATA[ and  createTime< date_sub(str_to_date('${createTimeEnd}','%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+			<if test="descriptionFuzzy!= null  and descriptionFuzzy!=''">
+				 and  description like concat('%', #{descriptionFuzzy}, '%')
+			</if>
+			<if test="authorFuzzy!= null  and authorFuzzy!=''">
+				 and  author like concat('%', #{authorFuzzy}, '%')
+			</if>
+			<if test="faceFuzzy!= null  and faceFuzzy!=''">
+				 and  face like concat('%', #{faceFuzzy}, '%')
+			</if>
+			<if test="crawlTimeStart!= null and crawlTimeStart!=''">
+				 <![CDATA[ and  crawlTime>=str_to_date('${crawlTimeStart}', '%Y-%m-%d') ]]>
+			</if>
+			<if test="crawlTimeEnd!= null and crawlTimeEnd!=''">
+				 <![CDATA[ and  crawlTime< date_sub(str_to_date('${crawlTimeEnd}','%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+	 </where>
+	</sql>
+
+	<!--删除：根据条件删除-->
+	<delete id="delete" parameterType="java.lang.Integer">
+		 DELETE FROM bili_fun <include refid="base_condition" />
+	</delete>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.crawl.bili.entity.po.BiliFun">
+		 INSERT INTO bili_fun
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="aid != null">
+				 aid,
+			</if>
+			<if test="videos != null">
+				 videos,
+			</if>
+			<if test="tid != null">
+				 tid,
+			</if>
+			<if test="tname != null">
+				 tname,
+			</if>
+			<if test="copyright != null">
+				 copyright,
+			</if>
+			<if test="pic != null">
+				 pic,
+			</if>
+			<if test="title != null">
+				 title,
+			</if>
+			<if test="attribute != null">
+				 attribute,
+			</if>
+			<if test="tags != null">
+				 tags,
+			</if>
+			<if test="duration != null">
+				 duration,
+			</if>
+			<if test="rights != null">
+				 rights,
+			</if>
+			<if test="stat != null">
+				 stat,
+			</if>
+			<if test="play != null">
+				 play,
+			</if>
+			<if test="favorites != null">
+				 favorites,
+			</if>
+			<if test="videoReview != null">
+				 videoReview,
+			</if>
+			<if test="createTime != null">
+				 createTime,
+			</if>
+			<if test="description != null">
+				 description,
+			</if>
+			<if test="mid != null">
+				 mid,
+			</if>
+			<if test="author != null">
+				 author,
+			</if>
+			<if test="face != null">
+				 face,
+			</if>
+			<if test="crawlTime != null">
+				 crawlTime,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="aid!=null">
+				 #{aid},
+			</if>
+			<if test="videos!=null">
+				 #{videos},
+			</if>
+			<if test="tid!=null">
+				 #{tid},
+			</if>
+			<if test="tname!=null">
+				 #{tname},
+			</if>
+			<if test="copyright!=null">
+				 #{copyright},
+			</if>
+			<if test="pic!=null">
+				 #{pic},
+			</if>
+			<if test="title!=null">
+				 #{title},
+			</if>
+			<if test="attribute!=null">
+				 #{attribute},
+			</if>
+			<if test="tags!=null">
+				 #{tags},
+			</if>
+			<if test="duration!=null">
+				 #{duration},
+			</if>
+			<if test="rights!=null">
+				 #{rights},
+			</if>
+			<if test="stat!=null">
+				 #{stat},
+			</if>
+			<if test="play!=null">
+				 #{play},
+			</if>
+			<if test="favorites!=null">
+				 #{favorites},
+			</if>
+			<if test="videoReview!=null">
+				 #{videoReview},
+			</if>
+			<if test="createTime!=null">
+				 #{createTime},
+			</if>
+			<if test="description!=null">
+				 #{description},
+			</if>
+			<if test="mid!=null">
+				 #{mid},
+			</if>
+			<if test="author!=null">
+				 #{author},
+			</if>
+			<if test="face!=null">
+				 #{face},
+			</if>
+			<if test="crawlTime!=null">
+				 #{crawlTime},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+		<insert id="insertBatch" parameterType="java.util.List">
+		 INSERT ignore INTO bili_fun(aid,videos,tid,tname,copyright,pic,title,attribute,tags,duration,rights,stat,play,favorites,videoReview,createTime,description,mid,author,face,crawlTime)values
+			 <foreach collection="list" item="item" separator=",">
+			 (
+			 #{item.aid},#{item.videos},#{item.tid},#{item.tname},#{item.copyright},#{item.pic},#{item.title},#{item.attribute},#{item.tags},#{item.duration},#{item.rights},#{item.stat},#{item.play},#{item.favorites},#{item.videoReview},#{item.createTime},#{item.description},#{item.mid},#{item.author},#{item.face},#{item.crawlTime}
+			 )
+			 </foreach>
+		</insert>
+
+	<!-- 修 改-->
+	<update id="update" parameterType="com.crawl.bili.entity.po.BiliFun">
+		 UPDATE bili_fun
+ 		 <set> 
+			<if test="aid != null">
+				 aid = #{aid},
+			</if>
+			<if test="videos != null">
+				 videos = #{videos},
+			</if>
+			<if test="tid != null">
+				 tid = #{tid},
+			</if>
+			<if test="tname != null">
+				 tname = #{tname},
+			</if>
+			<if test="copyright != null">
+				 copyright = #{copyright},
+			</if>
+			<if test="pic != null">
+				 pic = #{pic},
+			</if>
+			<if test="title != null">
+				 title = #{title},
+			</if>
+			<if test="attribute != null">
+				 attribute = #{attribute},
+			</if>
+			<if test="tags != null">
+				 tags = #{tags},
+			</if>
+			<if test="duration != null">
+				 duration = #{duration},
+			</if>
+			<if test="rights != null">
+				 rights = #{rights},
+			</if>
+			<if test="stat != null">
+				 stat = #{stat},
+			</if>
+			<if test="play != null">
+				 play = #{play},
+			</if>
+			<if test="favorites != null">
+				 favorites = #{favorites},
+			</if>
+			<if test="videoReview != null">
+				 videoReview = #{videoReview},
+			</if>
+			<if test="createTime != null">
+				 createTime = #{createTime},
+			</if>
+			<if test="description != null">
+				 description = #{description},
+			</if>
+			<if test="mid != null">
+				 mid = #{mid},
+			</if>
+			<if test="author != null">
+				 author = #{author},
+			</if>
+			<if test="face != null">
+				 face = #{face},
+			</if>
+			<if test="crawlTime != null">
+				 crawlTime = #{crawlTime},
+			</if>
+ 		 </set>
+ 		<include refid="base_condition" />
+	</update>
+
+	<!-- 根据PrimaryKey删除-->
+	<delete id="deleteByPrimaryKey">
+		delete from bili_fun where aid=#{aid}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByPrimaryKey" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from bili_fun where aid=#{aid}
+	</select>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM bili_fun <include refid="query_condition" />
+		 <if test="orderBy!=null">
+			 order by ${orderBy}
+			 <if test="ascOrDesc!=null">
+				 ${ascOrDesc}
+			 </if>
+		 </if>
+		 <if test="page!=null">
+			 limit #{page.start},#{page.end}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM bili_fun <include refid="query_condition" />
+	</select>
+
+</mapper>

@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crawl.webchat.dao.WxAccountDao">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.crawl.webchat.entity.po.WxAccount">
+		<!---->
+		<result column="account" property="account"  />
+		<!---->
+		<result column="accountName" property="accountName"  />
+		<!---->
+		<result column="authority" property="authority"  />
+		<!---->
+		<result column="introduction" property="introduction"  />
+		<!---->
+		<result column="fanNum" property="fanNum"  />
+		<!---->
+		<result column="categoryName" property="categoryName"  />
+		<!---->
+		<result column="tags" property="tags"  />
+		<!---->
+		<result column="joinAt" property="joinAt"  />
+		<!---->
+		<result column="zhishu" property="zhishu"  />
+		<!---->
+		<result column="rank" property="rank"  />
+		<!---->
+		<result column="rankDay" property="rankDay"  />
+		<!---->
+		<result column="topZhishu" property="topZhishu"  />
+		<!---->
+		<result column="topZhishuDay" property="topZhishuDay"  />
+		<!---->
+		<result column="topRank" property="topRank"  />
+		<!---->
+		<result column="topRankDay" property="topRankDay"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 account,accountName,authority,introduction,fanNum,categoryName,tags,joinAt,zhishu,rank,rankDay,topZhishu,topZhishuDay,topRank,topRankDay
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="account != null and account!=''">
+				 and  account = #{account}
+			</if>
+			<if test="accountName != null and accountName!=''">
+				 and  accountName = #{accountName}
+			</if>
+			<if test="authority != null and authority!=''">
+				 and  authority = #{authority}
+			</if>
+			<if test="introduction != null and introduction!=''">
+				 and  introduction = #{introduction}
+			</if>
+			<if test="fanNum != null">
+				 and  fanNum = #{fanNum}
+			</if>
+			<if test="categoryName != null and categoryName!=''">
+				 and  categoryName = #{categoryName}
+			</if>
+			<if test="tags != null and tags!=''">
+				 and  tags = #{tags}
+			</if>
+			<if test="joinAt != null">
+				 and  joinAt = #{joinAt}
+			</if>
+			<if test="zhishu != null">
+				 and  zhishu = #{zhishu}
+			</if>
+			<if test="rank != null">
+				 and  rank = #{rank}
+			</if>
+			<if test="rankDay != null">
+				 and  rankDay = #{rankDay}
+			</if>
+			<if test="topZhishu != null">
+				 and  topZhishu = #{topZhishu}
+			</if>
+			<if test="topZhishuDay != null">
+				 and  topZhishuDay = #{topZhishuDay}
+			</if>
+			<if test="topRank != null">
+				 and  topRank = #{topRank}
+			</if>
+			<if test="topRankDay != null">
+				 and  topRankDay = #{topRankDay}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where> <include refid="base_condition_filed" />	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+			<if test="accountFuzzy!= null  and accountFuzzy!=''">
+				 and  account like concat('%', #{accountFuzzy}, '%')
+			</if>
+			<if test="accountNameFuzzy!= null  and accountNameFuzzy!=''">
+				 and  accountName like concat('%', #{accountNameFuzzy}, '%')
+			</if>
+			<if test="authorityFuzzy!= null  and authorityFuzzy!=''">
+				 and  authority like concat('%', #{authorityFuzzy}, '%')
+			</if>
+			<if test="introductionFuzzy!= null  and introductionFuzzy!=''">
+				 and  introduction like concat('%', #{introductionFuzzy}, '%')
+			</if>
+			<if test="categoryNameFuzzy!= null  and categoryNameFuzzy!=''">
+				 and  categoryName like concat('%', #{categoryNameFuzzy}, '%')
+			</if>
+			<if test="tagsFuzzy!= null  and tagsFuzzy!=''">
+				 and  tags like concat('%', #{tagsFuzzy}, '%')
+			</if>
+			<if test="joinAtStart!= null and joinAtStart!=''">
+				 <![CDATA[ and  joinAt>=str_to_date('${joinAtStart}', '%Y-%m-%d') ]]>
+			</if>
+			<if test="joinAtEnd!= null and joinAtEnd!=''">
+				 <![CDATA[ and  joinAt< date_sub(str_to_date('${joinAtEnd}','%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+			<if test="rankDayStart!= null and rankDayStart!=''">
+				 <![CDATA[ and  rankDay>=str_to_date('${rankDayStart}', '%Y-%m-%d') ]]>
+			</if>
+			<if test="rankDayEnd!= null and rankDayEnd!=''">
+				 <![CDATA[ and  rankDay< date_sub(str_to_date('${rankDayEnd}','%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+			<if test="topZhishuDayStart!= null and topZhishuDayStart!=''">
+				 <![CDATA[ and  topZhishuDay>=str_to_date('${topZhishuDayStart}', '%Y-%m-%d') ]]>
+			</if>
+			<if test="topZhishuDayEnd!= null and topZhishuDayEnd!=''">
+				 <![CDATA[ and  topZhishuDay< date_sub(str_to_date('${topZhishuDayEnd}','%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+			<if test="topRankDayStart!= null and topRankDayStart!=''">
+				 <![CDATA[ and  topRankDay>=str_to_date('${topRankDayStart}', '%Y-%m-%d') ]]>
+			</if>
+			<if test="topRankDayEnd!= null and topRankDayEnd!=''">
+				 <![CDATA[ and  topRankDay< date_sub(str_to_date('${topRankDayEnd}','%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+	 </where>
+	</sql>
+
+	<!--删除：根据条件删除-->
+	<delete id="delete" parameterType="java.lang.String">
+		 DELETE FROM wx_account <include refid="base_condition" />
+	</delete>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.crawl.webchat.entity.po.WxAccount">
+		 INSERT ignore INTO wx_account
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="account != null">
+				 account,
+			</if>
+			<if test="accountName != null">
+				 accountName,
+			</if>
+			<if test="authority != null">
+				 authority,
+			</if>
+			<if test="introduction != null">
+				 introduction,
+			</if>
+			<if test="fanNum != null">
+				 fanNum,
+			</if>
+			<if test="categoryName != null">
+				 categoryName,
+			</if>
+			<if test="tags != null">
+				 tags,
+			</if>
+			<if test="joinAt != null">
+				 joinAt,
+			</if>
+			<if test="zhishu != null">
+				 zhishu,
+			</if>
+			<if test="rank != null">
+				 rank,
+			</if>
+			<if test="rankDay != null">
+				 rankDay,
+			</if>
+			<if test="topZhishu != null">
+				 topZhishu,
+			</if>
+			<if test="topZhishuDay != null">
+				 topZhishuDay,
+			</if>
+			<if test="topRank != null">
+				 topRank,
+			</if>
+			<if test="topRankDay != null">
+				 topRankDay,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="account!=null">
+				 #{account},
+			</if>
+			<if test="accountName!=null">
+				 #{accountName},
+			</if>
+			<if test="authority!=null">
+				 #{authority},
+			</if>
+			<if test="introduction!=null">
+				 #{introduction},
+			</if>
+			<if test="fanNum!=null">
+				 #{fanNum},
+			</if>
+			<if test="categoryName!=null">
+				 #{categoryName},
+			</if>
+			<if test="tags!=null">
+				 #{tags},
+			</if>
+			<if test="joinAt!=null">
+				 #{joinAt},
+			</if>
+			<if test="zhishu!=null">
+				 #{zhishu},
+			</if>
+			<if test="rank!=null">
+				 #{rank},
+			</if>
+			<if test="rankDay!=null">
+				 #{rankDay},
+			</if>
+			<if test="topZhishu!=null">
+				 #{topZhishu},
+			</if>
+			<if test="topZhishuDay!=null">
+				 #{topZhishuDay},
+			</if>
+			<if test="topRank!=null">
+				 #{topRank},
+			</if>
+			<if test="topRankDay!=null">
+				 #{topRankDay},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+		<insert id="insertBatch" parameterType="com.crawl.webchat.entity.po.WxAccount">
+		 INSERT INTO wx_account(account,accountName,authority,introduction,fanNum,categoryName,tags,joinAt,zhishu,rank,rankDay,topZhishu,topZhishuDay,topRank,topRankDay)values
+			 <foreach collection="list" item="item" separator=",">
+			 (
+			 #{item.account},#{item.accountName},#{item.authority},#{item.introduction},#{item.fanNum},#{item.categoryName},#{item.tags},#{item.joinAt},#{item.zhishu},#{item.rank},#{item.rankDay},#{item.topZhishu},#{item.topZhishuDay},#{item.topRank},#{item.topRankDay}
+			 )
+			 </foreach>
+		</insert>
+
+	<!-- 修 改-->
+	<update id="update" parameterType="com.crawl.webchat.entity.po.WxAccount">
+		 UPDATE wx_account
+ 		 <set> 
+			<if test="account != null">
+				 account = #{account},
+			</if>
+			<if test="accountName != null">
+				 accountName = #{accountName},
+			</if>
+			<if test="authority != null">
+				 authority = #{authority},
+			</if>
+			<if test="introduction != null">
+				 introduction = #{introduction},
+			</if>
+			<if test="fanNum != null">
+				 fanNum = #{fanNum},
+			</if>
+			<if test="categoryName != null">
+				 categoryName = #{categoryName},
+			</if>
+			<if test="tags != null">
+				 tags = #{tags},
+			</if>
+			<if test="joinAt != null">
+				 joinAt = #{joinAt},
+			</if>
+			<if test="zhishu != null">
+				 zhishu = #{zhishu},
+			</if>
+			<if test="rank != null">
+				 rank = #{rank},
+			</if>
+			<if test="rankDay != null">
+				 rankDay = #{rankDay},
+			</if>
+			<if test="topZhishu != null">
+				 topZhishu = #{topZhishu},
+			</if>
+			<if test="topZhishuDay != null">
+				 topZhishuDay = #{topZhishuDay},
+			</if>
+			<if test="topRank != null">
+				 topRank = #{topRank},
+			</if>
+			<if test="topRankDay != null">
+				 topRankDay = #{topRankDay},
+			</if>
+ 		 </set>
+ 		<include refid="base_condition" />
+	</update>
+
+	<!-- 根据PrimaryKey删除-->
+	<delete id="deleteByPrimaryKey">
+		delete from wx_account where account=#{account}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByPrimaryKey" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from wx_account where account=#{account}
+	</select>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM wx_account <include refid="query_condition" />
+		 <if test="orderBy!=null">
+			 order by ${orderBy}
+			 <if test="ascOrDesc!=null">
+				 ${ascOrDesc}
+			 </if>
+		 </if>
+		 <if test="page!=null">
+			 limit #{page.start},#{page.end}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM wx_account <include refid="query_condition" />
+	</select>
+
+</mapper>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"	
+	xmlns:context="http://www.springframework.org/schema/context"
+	
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/beans 
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	 http://www.springframework.org/schema/context 
+	 http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+     
+	<context:annotation-config />
+	<context:component-scan base-package="com.stnts.wjds">     
+	    <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+	</context:component-scan>
+	
+	<!-- PropertyPlaceholderConfigurer,用于spring ${placeholder}的解析 -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+		<property name="properties" ref="config" />
+	</bean>
+	<bean id="config" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<value>classpath:config.properties</value>
+				<value>
+					file:/webser/java_webapps/wjds/config/api-config.properties
+				</value>
+			</list>
+		</property>
+	</bean>
+    
+    <!-- 配置数据库注解aop 阿里druid数据源-->
+	<bean id="abstractDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close" abstract="true">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<!-- 配置初始化大小、最小、最大 -->
+        <property name="initialSize" value="1" />
+        <property name="minIdle" value="1" />
+        <property name="maxActive" value="20" />
+       	<!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait" value="60000" />
+       	<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="60000" />
+       	<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="300000" />
+        <property name="validationQuery" value="SELECT 'x'" />
+        <property name="testWhileIdle" value="true" />
+        <property name="testOnBorrow" value="false" />
+        <property name="testOnReturn" value="false" />
+       	<!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+        <property name="poolPreparedStatements" value="true" />
+        <property name="maxPoolPreparedStatementPerConnectionSize"  value="20" />
+       	<!-- 配置监控统计拦截的filters -->
+        <property name="filters" value="wall,stat" />
+	</bean>
+	
+	<bean id="dataSource" parent="abstractDataSource">
+    	<property name="url" value="${master1.url}" />
+		<property name="username" value="${master1.user}" />
+		<property name="password" value="${master1.password}" />
+   	</bean>
+
+	<!-- druid SQL monitor -->
+	<bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">
+		<property name="mergeSql" value="true" />
+		<!-- StatFilter属性slowSqlMillis用来配置SQL慢的标准，执行时间超过slowSqlMillis的就是慢。slowSqlMillis的缺省值为3000，也就是3秒。 -->
+	    <property name="slowSqlMillis" value="800" />
+	    <property name="logSlowSql" value="true" />
+	</bean>
+	 
+    <!-- SqlSessionFactory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
+        <property name="dataSource" ref="dataSource" />
+        <property name="mapperLocations" value="classpath*:mybatis/*.xml"></property>
+    </bean>
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0"  ref="sqlSessionFactory" />
+	</bean>
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+  	 	<!-- 注解dao，扫描dao目录下的所有dao -->
+		<property name="basePackage" value="com.crawl.bili.dao" />
+	</bean>
+    
+    <!-- TransactionManager -->
+    <!-- 
+    <tx:annotation-driven transaction-manager="transactionManager"  proxy-target-class="true"/>
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	-->
+	
+</beans>

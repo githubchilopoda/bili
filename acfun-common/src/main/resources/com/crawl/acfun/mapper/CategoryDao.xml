@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crawl.acfun.dao.CategoryDao">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.crawl.acfun.entity.po.Category">
+		<!---->
+		<result column="id" property="id"  />
+		<!---->
+		<result column="name" property="name"  />
+		<!---->
+		<result column="channel" property="channel"  />
+		<!---->
+		<result column="pid" property="pid"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 id,name,channel,pid
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="id != null">
+				 and  id = #{id}
+			</if>
+			<if test="name != null and name!=''">
+				 and  name = #{name}
+			</if>
+			<if test="channel != null and channel!=''">
+				 and  channel = #{channel}
+			</if>
+			<if test="pid != null">
+				 and  pid = #{pid}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where> <include refid="base_condition_filed" />	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+			<if test="nameFuzzy!= null  and nameFuzzy!=''">
+				 and  name like concat('%', #{nameFuzzy}, '%')
+			</if>
+			<if test="channelFuzzy!= null  and channelFuzzy!=''">
+				 and  channel like concat('%', #{channelFuzzy}, '%')
+			</if>
+	 </where>
+	</sql>
+
+	<!--删除：根据条件删除-->
+	<delete id="delete" parameterType="java.lang.Integer">
+		 DELETE FROM category <include refid="base_condition" />
+	</delete>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.crawl.acfun.entity.po.Category">
+		 INSERT INTO category
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null">
+				 id,
+			</if>
+			<if test="name != null">
+				 name,
+			</if>
+			<if test="channel != null">
+				 channel,
+			</if>
+			<if test="pid != null">
+				 pid,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id!=null">
+				 #{id},
+			</if>
+			<if test="name!=null">
+				 #{name},
+			</if>
+			<if test="channel!=null">
+				 #{channel},
+			</if>
+			<if test="pid!=null">
+				 #{pid},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+		<insert id="insertBatch" parameterType="com.crawl.acfun.entity.po.Category">
+		 INSERT INTO category(id,name,channel,pid)values
+			 <foreach collection="list" item="item" separator=",">
+			 (
+			 #{item.id},#{item.name},#{item.channel},#{item.pid}
+			 )
+			 </foreach>
+		</insert>
+
+	<!-- 修 改-->
+	<update id="update" parameterType="com.crawl.acfun.entity.po.Category">
+		 UPDATE category
+ 		 <set> 
+			<if test="id != null">
+				 id = #{id},
+			</if>
+			<if test="name != null">
+				 name = #{name},
+			</if>
+			<if test="channel != null">
+				 channel = #{channel},
+			</if>
+			<if test="pid != null">
+				 pid = #{pid},
+			</if>
+ 		 </set>
+ 		<include refid="base_condition" />
+	</update>
+
+	<!-- 根据PrimaryKey删除-->
+	<delete id="deleteByPrimaryKey">
+		delete from category where id=#{id}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByPrimaryKey" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from category where id=#{id}
+	</select>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM category <include refid="query_condition" />
+		 <if test="orderBy!=null">
+			 order by ${orderBy}
+			 <if test="ascOrDesc!=null">
+				 ${ascOrDesc}
+			 </if>
+		 </if>
+		 <if test="page!=null">
+			 limit #{page.start},#{page.end}
+		 </if>
+	</select>
+	
+	<select id="getCategoryList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM category
+		 <if test="top != null">
+			 <if test="top == true">
+				 where pid=0
+			 </if>
+			 <if test="top != true">
+				 where pid > 0
+			 </if>
+		 </if>		 
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM category <include refid="query_condition" />
+	</select>
+
+</mapper>

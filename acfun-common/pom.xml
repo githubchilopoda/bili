@@ -1,0 +1,259 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <parent>
+	<groupId>com.crawl</groupId>
+	<artifactId>acfun</artifactId>
+	<version>1.0</version>
+  </parent>
+  
+  <artifactId>acfun-common</artifactId>	
+
+
+		<dependencies>
+		
+		<dependency>
+		    <groupId>org.json</groupId>
+		    <artifactId>json</artifactId>
+		    <version>20160810</version>
+		</dependency>
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>servlet-api</artifactId>
+				<version>2.5</version>
+			</dependency>
+			<!-- spring -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+			</dependency>			
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-jdbc</artifactId>				
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-web</artifactId>				
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-webmvc</artifactId>				
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-test</artifactId>				
+				<scope>test</scope>
+			</dependency>			
+			
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>5.1.12</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.annotation</groupId>
+				<artifactId>jsr250-api</artifactId>
+				<version>1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.aspectj</groupId>
+				<artifactId>aspectjweaver</artifactId>
+				<version>1.6.8</version>
+			</dependency>			
+			<dependency>
+			    <groupId>com.alibaba</groupId>
+			    <artifactId>druid</artifactId>
+			    <version>1.0.26</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<version>4.4.1</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpcore</artifactId>
+				<version>4.4.1</version>
+			</dependency>
+			
+			
+			<dependency>
+				<groupId>xerces</groupId>
+				<artifactId>xercesImpl</artifactId>
+				<version>2.9.1</version>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-access</artifactId>
+				<version>0.9.21</version>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>0.9.21</version>
+			</dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.7</version>
+        </dependency>
+			<dependency>
+			    <groupId>com.google.guava</groupId>
+			    <artifactId>guava</artifactId>
+			    <version>14.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-core-asl</artifactId>
+				<version>1.8.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-mapper-asl</artifactId>
+				<version>1.8.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-jaxrs</artifactId>
+				<version>1.8.1</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-annotations</artifactId>
+				<version>2.4.1</version>
+			</dependency>
+			<!-- redis -->
+			<dependency>
+				<groupId>redis.clients</groupId>
+				<artifactId>jedis</artifactId>
+				<version>2.1.0</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.data</groupId>
+				<artifactId>spring-data-redis</artifactId>
+				<version>1.1.0.RELEASE</version>
+			</dependency>
+
+			<dependency>
+				<groupId>javax.mail</groupId>
+				<artifactId>mail</artifactId>
+				<version>1.4</version>
+			</dependency>
+
+			<!-- soap -->
+			<dependency>
+				<groupId>axis</groupId>
+				<artifactId>axis</artifactId>
+				<version>1.4</version>
+			</dependency>
+			
+			<!-- jetty -->
+			<dependency>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty</artifactId>
+				<version>6.1.22</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jsp-2.1-jetty</artifactId>
+				<version>6.1.22</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-webapp</artifactId>
+				<scope>test</scope>
+				<version>7.2.2.v20101205</version>
+				<optional>true</optional>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>${lang3.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.validation</groupId>
+				<artifactId>validation-api</artifactId>
+				<version>1.0.0.GA</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-validator</artifactId>
+				<version>4.1.0.Final</version>
+			</dependency>
+			<!-- mybatis -->
+			<dependency>
+				<groupId>org.mybatis</groupId>
+				<artifactId>mybatis</artifactId>
+				<version>${mybatis.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.mybatis</groupId>
+				<artifactId>mybatis-spring</artifactId>
+				<version>${mybatis.string.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.el</groupId>
+				<artifactId>el-api</artifactId>
+				<version>2.2.1-b04</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>jstl</artifactId>
+				<version>1.2</version>
+			</dependency>
+			<!-- junit测试包 -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.8.1</version>
+			</dependency>	
+			<!-- freemarker -->
+			<dependency>
+				<groupId>org.freemarker</groupId>
+				<artifactId>freemarker</artifactId>
+				<version>2.3.20</version>
+			</dependency>
+			<!-- poi office -->
+		  	<dependency>
+			    <groupId>org.apache.poi</groupId>
+			    <artifactId>poi</artifactId>
+			    <version>3.9</version>
+			</dependency>
+			<dependency>  
+	            <groupId>org.apache.poi</groupId>  
+	            <artifactId>poi-excelant</artifactId>  
+	            <version>3.9</version>  
+	        </dependency>
+	        <dependency>
+			    <groupId>de.idyl</groupId>
+			    <artifactId>winzipaes</artifactId>
+			    <version>1.0.1</version>
+			</dependency>
+		</dependencies>
+
+	<repositories>
+		<repository>
+			<id>maven-restlet</id>
+			<name>Public online Restlet repository</name>
+			<url>http://maven.restlet.org</url>
+		</repository>
+		<!-- <repository> <id>stnts</id> <url>http://192.168.7.106:8080/nexus-2.0.3/content/repositories/stnts</url> 
+		</repository> -->
+	</repositories>
+	
+</project>
